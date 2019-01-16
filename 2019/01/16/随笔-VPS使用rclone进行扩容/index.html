@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="hello,VPS,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在VPS使用的过程中，常常会需要使用VPS进行离线下载，比如通过VPS来搬运百度云的资料。一般来说，VPS本身的容量较小，无法满足离线下载的需要。这时候就可以利用rclone将OneDrive、Dropbox等常见网盘挂载在VPS上，同步传输数据。Rclone 是一款的命令行工具，支持在不同对象存储、网盘间同步、上传、下载数据。本文介绍了rclone的安装和使用及常见问题">
+<meta name="keywords" content="hello,VPS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="随笔-VPS使用rclone进行扩容">
+<meta property="og:url" content="http://yoursite.com/2019/01/16/随笔-VPS使用rclone进行扩容/index.html">
+<meta property="og:site_name" content="简问">
+<meta property="og:description" content="在VPS使用的过程中，常常会需要使用VPS进行离线下载，比如通过VPS来搬运百度云的资料。一般来说，VPS本身的容量较小，无法满足离线下载的需要。这时候就可以利用rclone将OneDrive、Dropbox等常见网盘挂载在VPS上，同步传输数据。Rclone 是一款的命令行工具，支持在不同对象存储、网盘间同步、上传、下载数据。本文介绍了rclone的安装和使用及常见问题">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-16T12:41:40.980Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="随笔-VPS使用rclone进行扩容">
+<meta name="twitter:description" content="在VPS使用的过程中，常常会需要使用VPS进行离线下载，比如通过VPS来搬运百度云的资料。一般来说，VPS本身的容量较小，无法满足离线下载的需要。这时候就可以利用rclone将OneDrive、Dropbox等常见网盘挂载在VPS上，同步传输数据。Rclone 是一款的命令行工具，支持在不同对象存储、网盘间同步、上传、下载数据。本文介绍了rclone的安装和使用及常见问题">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/16/随笔-VPS使用rclone进行扩容/">
+
+
+
+
+
+  <title>随笔-VPS使用rclone进行扩容 | 简问</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?02c20c7fa12243b5d306df03ad146893";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简问</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/16/随笔-VPS使用rclone进行扩容/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="trobr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简问">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">随笔-VPS使用rclone进行扩容</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-16T19:21:05+08:00">
+                2019-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/helloworld/" itemprop="url" rel="index">
+                    <span itemprop="name">helloworld</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/01/16/随笔-VPS使用rclone进行扩容/" class="leancloud_visitors" data-flag-title="随笔-VPS使用rclone进行扩容">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在VPS使用的过程中，常常会需要使用VPS进行离线下载，比如通过VPS来搬运百度云的资料。一般来说，VPS本身的容量较小，无法满足离线下载的需要。这时候就可以利用rclone将OneDrive、Dropbox等常见网盘挂载在VPS上，同步传输数据。<br>Rclone 是一款的命令行工具，支持在不同对象存储、网盘间同步、上传、下载数据。<br>本文介绍了rclone的安装和使用及常见问题</p>
+<a id="more"></a>
+<!-- toc -->
+<ul>
+<li><a href="#1-安装rclone">1. 安装rclone</a></li>
+<li><a href="#2-挂载onedrive">2. 挂载OneDrive</a></li>
+<li><a href="#3-设置自启动ubuntu1804">3. 设置自启动（Ubuntu18.04）</a><ul>
+<li><a href="#31-initd方法">3.1 init.d方法</a></li>
+<li><a href="#32-系统服务法">3.2 系统服务法</a></li>
+</ul>
+</li>
+<li><a href="#参考">参考：</a></li>
+</ul>
+<!-- tocstop -->
+<p>[TOC]</p>
+<h1><span id="1-安装rclone">1. 安装rclone</span></h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir rclone</span><br><span class="line">wget https://downloads.rclone.org/rclone-current-linux-amd64.zip</span><br><span class="line">unzip rclone-current-linux-amd64.zip</span><br><span class="line">chmod 0755 ./rclone-*/rclone</span><br><span class="line">cp ./rclone-*/rclone /usr/bin/</span><br><span class="line">rm -rf ./rclone-*</span><br></pre></td></tr></table></figure>
+<p>这样就可以配置rclone<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rclone config</span><br></pre></td></tr></table></figure></p>
+<p>这里配置可以参考<a href="https://blog.yuntest.org/jszy/xdfx/229.html" target="_blank" rel="noopener">这篇文章</a><br>需要注意的是，如果是ssh远程登录VPS进行安装的，在询问<code>Use auto config?</code>时，选择否，这时候会得到类似的输出：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">For this to work, you will need rclone available on a machine that has a web browser available.</span><br><span class="line">Execute the following on your machine:</span><br><span class="line">	rclone authorize "amazon cloud drive"</span><br><span class="line">Then paste the result below:</span><br></pre></td></tr></table></figure></p>
+<p><strong>然后在自己电脑上</strong>（能打开浏览器的电脑上）（不是远程）下载rclone，可以去<a href="https://github.com/ncw/rclone/releases" target="_blank" rel="noopener">github</a>下载，然后解压后进入rclone目录，在目录下打开终端，输入上面第三行的命令<code>rclone authorize &quot;amazon cloud drive&quot;</code>(不同的网盘这句话不同)，即可自动打开浏览器获取密码。</p>
+<h1><span id="2-挂载onedrive">2. 挂载OneDrive</span></h1><p>在本地创建一个文件夹用于挂载OneDrive，如：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /onedrive</span><br></pre></td></tr></table></figure></p>
+<p>然后在OneDrive中创建一个目录用于挂载到vps上。<br>然后执行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rclone mount DriveName:RemoteFolder LocalFolder --copy-links --no-gzip-encoding --no-check-certificate --allow-other --allow-non-empty --umask 000</span><br></pre></td></tr></table></figure></p>
+<p>其中DriveName时<code>rclone config</code>中第一步输入的名字，<code>RemoteFolder</code>是OneDrive上创建的文件夹，<code>LocalFolder</code>是本地用于挂载的文件夹。<br><strong>注意上述命令执行后不会退出，而是一直占用终端，因此最好在<code>screen</code>或<code>tmux</code>中执行上述命令，或者在后面加上<code>2&gt;&amp;1 &amp;</code>，即：</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rclone mount DriveName:RemoteFolder LocalFolder --copy-links --no-gzip-encoding --no-check-certificate --allow-other --allow-non-empty --umask 000 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure></p>
+<p>验证挂载是否成功：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br></pre></td></tr></table></figure></p>
+<h1><span id="3-设置自启动ubuntu1804">3. 设置自启动（Ubuntu18.04）</span></h1><p>关于自启动，网上有很多博客，但都存在一点小问题。按照网上的方法来创建自启动服务，不管是<code>systemd</code>还是<code>init.d</code>，自启动时挂载都失败，但是手动启动就可以启动。<br>这是因为我创建rclone的时候不是使用root账号，rclone的配置文件保存在<code>~/.config/rclone/rclone.conf</code>，而开机的时候rclone无法找到这个配置文件，所以导致启动失败。<br>然而用户登录后，shell就可以获取到用户目录，从而rclone可以获取<code>~/.config/rclone/rclone.conf</code>的配置文件，所以对与开机自启动的脚本中的命令，需要加上<code>--config</code>选项。</p>
+<h2><span id="31-initd方法">3.1 init.d方法</span></h2><p>使用init服务管理rclone的开机自动挂载。在<code>/etc/init.d</code>目录下创建<code>rcloned</code>文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/init.d/rcloned</span><br></pre></td></tr></table></figure>
+<p>然后复制：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line">PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin</span><br><span class="line">export PATH</span><br><span class="line">NAME_BIN="rclone"</span><br><span class="line"><span class="meta">#</span>## BEGIN INIT INFO</span><br><span class="line"><span class="meta">#</span> Provides:          rclone</span><br><span class="line"><span class="meta">#</span> Required-Start:    $all</span><br><span class="line"><span class="meta">#</span> Required-Stop:     $all</span><br><span class="line"><span class="meta">#</span> Default-Start:     2 3 4 5</span><br><span class="line"><span class="meta">#</span> Default-Stop:      0 1 6</span><br><span class="line"><span class="meta">#</span> Short-Description: Start rclone at boot time</span><br><span class="line"><span class="meta">#</span> Description:       Enable rclone by daemon.</span><br><span class="line"><span class="meta">#</span>## END INIT INFO</span><br><span class="line"></span><br><span class="line">NAME="msOneDrive" # rclone name 名，这里需与自己设置的 remote_name 相一致，本示例填写 msOneDrive</span><br><span class="line">REMOTE='VPS/remote' #远程文件夹路径，本示例填写 VPS/remote</span><br><span class="line">LOCAL='/VPS' #挂载地址，本示例填写 /VPS</span><br><span class="line">CONFIG='/home/trobr/.config/rclone/rclone.conf' # 配置文件的目录 通过find ~ | grep rclone.conf查找</span><br><span class="line"></span><br><span class="line">Green_font_prefix="\033[32m" &amp;&amp; Red_font_prefix="\033[31m" &amp;&amp; Green_background_prefix="\033[42;37m" &amp;&amp; Red_background_prefix="\033[41;37m" &amp;&amp; Font_color_suffix="\033[0m"</span><br><span class="line">Info="$&#123;Green_font_prefix&#125;[信息]$&#123;Font_color_suffix&#125;"</span><br><span class="line">Error="$&#123;Red_font_prefix&#125;[错误]$&#123;Font_color_suffix&#125;"</span><br><span class="line">RETVAL=0</span><br><span class="line">count=1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">LOG_FLODER='/home/trobr/.log/rclone'</span><br><span class="line">LOG_FILE='/home/trobr/.log/rclone/init.log'</span><br><span class="line">RUN_LOG='/home/trobr/.log/rclone/run.log'</span><br><span class="line">-mkdir -p RUN_LOG</span><br><span class="line">-rm -f $LOG_FILE</span><br><span class="line">-rm -f $RUN_LOG</span><br><span class="line">echo -e "init with $1" &gt;&gt; $LOG_FILE</span><br><span class="line"></span><br><span class="line">check_running()&#123;</span><br><span class="line">    PID="$(ps -C $NAME_BIN -o pid= |head -n1 |grep -o '[0-9]\&#123;1,\&#125;')"</span><br><span class="line">    if [[ ! -z $&#123;PID&#125; ]]; then</span><br><span class="line">        return 0</span><br><span class="line">    else</span><br><span class="line">        return 1</span><br><span class="line">    fi</span><br><span class="line">&#125;</span><br><span class="line">do_start()&#123;</span><br><span class="line">    check_running</span><br><span class="line">    if [[ $? -eq 0 ]]; then</span><br><span class="line">        echo -e "$&#123;Info&#125; $NAME_BIN (PID $&#123;PID&#125;) 正在运行..." &amp;&amp; exit 0</span><br><span class="line">    else</span><br><span class="line">        fusermount -zuq $LOCAL &gt;/dev/null 2&gt;&amp;1</span><br><span class="line">        mkdir -p $LOCAL</span><br><span class="line">        # 这里添加了配置--config</span><br><span class="line">        /usr/bin/rclone mount $NAME:$REMOTE $LOCAL --copy-links --no-gzip-encoding --no-check-certificate --allow-other --allow-non-empty --umask 000 -vv --config $CONFIG &gt;$RUN_LOG 2&gt;&amp;1 &amp;</span><br><span class="line">        sleep 2s</span><br><span class="line">        check_running</span><br><span class="line">        if [[ $? -eq 0 ]]; then</span><br><span class="line">            echo -e "$&#123;Info&#125; $NAME_BIN 启动成功 !" &gt;&gt; $LOG_FILE</span><br><span class="line">        else</span><br><span class="line">            # echo -e "$&#123;Error&#125; $NAME_BIN 启动失败 !"</span><br><span class="line">            echo -e "启动失败，第$count次重启 ！" &gt;&gt; $LOG_FILE</span><br><span class="line">            let 'count += 1'</span><br><span class="line">            do_start</span><br><span class="line">        fi</span><br><span class="line">    fi</span><br><span class="line">&#125;</span><br><span class="line">do_stop()&#123;</span><br><span class="line">    check_running</span><br><span class="line">    if [[ $? -eq 0 ]]; then</span><br><span class="line">        kill -9 $&#123;PID&#125;</span><br><span class="line">        RETVAL=$?</span><br><span class="line">        if [[ $RETVAL -eq 0 ]]; then</span><br><span class="line">            echo -e "$&#123;Info&#125; $NAME_BIN 停止成功 !"</span><br><span class="line">        else</span><br><span class="line">            echo -e "$&#123;Error&#125; $NAME_BIN 停止失败 !"</span><br><span class="line">        fi</span><br><span class="line">    else</span><br><span class="line">        echo -e "$&#123;Info&#125; $NAME_BIN 未运行"</span><br><span class="line">        RETVAL=1</span><br><span class="line">    fi</span><br><span class="line">    fusermount -zuq $LOCAL &gt;/dev/null 2&gt;&amp;1</span><br><span class="line">&#125;</span><br><span class="line">do_status()&#123;</span><br><span class="line">    check_running</span><br><span class="line">    if [[ $? -eq 0 ]]; then</span><br><span class="line">        echo -e "$&#123;Info&#125; $NAME_BIN (PID $(echo $&#123;PID&#125;)) 正在运行..."</span><br><span class="line">    else</span><br><span class="line">        echo -e "$&#123;Info&#125; $NAME_BIN 未运行 !"</span><br><span class="line">        RETVAL=1</span><br><span class="line">    fi</span><br><span class="line">&#125;</span><br><span class="line">do_restart()&#123;</span><br><span class="line">    do_stop</span><br><span class="line">    do_start</span><br><span class="line">&#125;</span><br><span class="line">case "$1" in</span><br><span class="line">    start|stop|restart|status)</span><br><span class="line">    do_$1</span><br><span class="line">    ;;</span><br><span class="line">    *)</span><br><span class="line">    echo "使用方法: $0 &#123; start | stop | restart | status &#125;"</span><br><span class="line">    RETVAL=1</span><br><span class="line">    ;;</span><br><span class="line">esac</span><br><span class="line">exit $RETVAL</span><br></pre></td></tr></table></figure>
+<h2><span id="32-系统服务法">3.2 系统服务法</span></h2><p>新建一个rclone.server文件，<br>Ubuntu18中：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /lib/systemd/system/rclone.service</span><br></pre></td></tr></table></figure></p>
+<p>写入以下内容：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=rclone</span><br><span class="line">     </span><br><span class="line">[Service]</span><br><span class="line">User=root</span><br><span class="line">ExecStart=/usr/bin/rclone mount DriveName:RemoteFolder LocalFolder --allow-other --allow-non-empty --vfs-cache-mode writes --config /home/br/.config/rclone/rclone.conf</span><br><span class="line">Restart=on-abort</span><br><span class="line">     </span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<p>注意修改<code>DriveName</code>、<code>RemoteFolder</code>和<code>LocalFolder</code>的值<br>然后重载daemon，使新的服务生效：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure></p>
+<p>设置开机启动<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rclone启动：</span><br><span class="line">systemctl start rclone</span><br><span class="line">开机启动：</span><br><span class="line">systemctl enable rclone</span><br></pre></td></tr></table></figure></p>
+<h1><span id="参考">参考：</span></h1><p><a href="https://timelate.com/archives/install-rclone-on-ubuntu.html" target="_blank" rel="noopener">Ubuntu 18.04 手动安装 rclone 并自动挂载 Google Drive</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hello/" rel="tag"># hello</a>
+          
+            <a href="/tags/VPS/" rel="tag"># VPS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/16/hellohexo/" rel="next" title="hellohexo">
+                <i class="fa fa-chevron-left"></i> hellohexo
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/16/随笔-GitHub个人博客搭建/" rel="prev" title="随笔-GitHub个人博客搭建">
+                随笔-GitHub个人博客搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">trobr</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/trobr" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wyf5249@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">1. 安装rclone</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">2. 挂载OneDrive</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">3. 设置自启动（Ubuntu18.04）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 init.d方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 系统服务法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">参考：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">trobr</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("i1hFCrHSRXoVXveSnCHU0HE3-gzGzoHsz", "3b5qD3myoCLUirP0yOGPSHWR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
