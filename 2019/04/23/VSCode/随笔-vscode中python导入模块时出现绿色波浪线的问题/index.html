@@ -87,10 +87,13 @@
 <meta property="og:site_name" content="简问">
 <meta property="og:description" content="在使用VSCode的Visual studio IntelliCode插件时，如果在Python文件中存在导入当前文件夹下模块的情况，编辑器可能会出现绿色的波浪线，提示unsolved import xxx，提示不能导入我们需要导入的模块，但是运行的时候并没有问题。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-23T05:53:45.576Z">
+<meta property="og:image" content="http://yoursite.com/2019/04/23/VSCode/随笔-vscode中python导入模块时出现绿色波浪线的问题/波浪线绿色.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/04/23/VSCode/随笔-vscode中python导入模块时出现绿色波浪线的问题/波浪线绿色提示.jpg">
+<meta property="og:updated_time" content="2019-04-23T06:02:13.803Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vscode中python导入模块时出现绿色波浪线的问题">
 <meta name="twitter:description" content="在使用VSCode的Visual studio IntelliCode插件时，如果在Python文件中存在导入当前文件夹下模块的情况，编辑器可能会出现绿色的波浪线，提示unsolved import xxx，提示不能导入我们需要导入的模块，但是运行的时候并没有问题。">
+<meta name="twitter:image" content="http://yoursite.com/2019/04/23/VSCode/随笔-vscode中python导入模块时出现绿色波浪线的问题/波浪线绿色.jpg">
 
 
 
@@ -292,7 +295,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-23T13:53:45+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-23T14:02:13+08:00">
                 2019-04-23
               </time>
             
@@ -372,9 +375,11 @@
 <li><a href="#参考">参考</a></li>
 </ul>
 <!-- tocstop -->
-<h1><span id="问题描述">问题描述</span></h1><p>在使用VSCode的<code>Visual studio IntelliCode</code>插件时，如果在Python文件中存在导入当前文件夹下模块的情况，编辑器可能会出现绿色的波浪线，提示<code>unsolved import xxx</code>，提示不能导入我们需要导入的模块，但是运行的时候并没有问题。<br>目录结构如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">myscript.py</span><br><span class="line">lib</span><br><span class="line">|-__init__.py</span><br><span class="line">|-fclib</span><br><span class="line">    |-__init__.py</span><br><span class="line">    |-misc.py</span><br><span class="line">    |-datelib.py</span><br></pre></td></tr></table></figure></p>
-<p>导入代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> easylog <span class="keyword">import</span> EasyLog</span><br><span class="line"><span class="keyword">from</span> lib.fclib.misc <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> lib.fclib.datelib <span class="keyword">import</span> timestamp</span><br></pre></td></tr></table></figure></p>
+<h1><span id="问题描述">问题描述</span></h1><p>在使用VSCode的<code>Visual studio IntelliCode</code>插件时，如果在Python文件中存在导入当前文件夹下模块的情况，编辑器可能会出现绿色的波浪线，提示<code>unsolved import xxx</code>，提示不能导入我们需要导入的模块，但是运行的时候并没有问题。<br>目录结构如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">|-code</span><br><span class="line">    |-demo.py</span><br><span class="line">    |-net.py</span><br><span class="line">    |-run_SiamRPN.py</span><br><span class="line">    |-utils.py</span><br></pre></td></tr></table></figure></p>
+<p>导入代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> net <span class="keyword">import</span> SiamRPNvot</span><br><span class="line"><span class="keyword">from</span> run_SiamRPN <span class="keyword">import</span> SiamRPN_init, SiamRPN_track</span><br><span class="line"><span class="keyword">from</span> utils <span class="keyword">import</span> get_axis_aligned_bbox, cxy_wh_2_rect</span><br></pre></td></tr></table></figure></p>
 <p>导入的时候就会提示<code>unresolved import &#39;lib.fclib.misc&#39; Python(unresolved-import)</code>,虽然代码可以运行，但是编辑器的代码提示功能就无法使用了。</p>
+<img src="/2019/04/23/VSCode/随笔-vscode中python导入模块时出现绿色波浪线的问题/波浪线绿色.jpg" title="错误提示">
+<img src="/2019/04/23/VSCode/随笔-vscode中python导入模块时出现绿色波浪线的问题/波浪线绿色提示.jpg" title="错误提示">
 <h1><span id="解决方法">解决方法</span></h1><p>这个问题出现原因未知，可能由于<code>Visual studio IntelliCode</code>插件的BUG，将设置中<code>&quot;python.jediEnabled&quot;: false,</code>选项设置成<code>true</code>可以解决这个问题，但是这样的后果就是不能使用<code>Visual studio IntelliCode</code>。<br>另外一种解决方法是在官方的<a href="https://github.com/Microsoft/vscode-python/issues/3840#issuecomment-463789294" target="_blank" rel="noopener">ISSUE</a>中提到的方法:</p>
 <ol>
 <li>在工程根目录下创建一个<code>.env</code>文件</li>
