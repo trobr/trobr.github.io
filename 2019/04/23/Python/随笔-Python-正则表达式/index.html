@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="正则表达式（英语：Regular Expression，在代码中常简写为regex、regexp或RE），又称正规表示式、正规表示法、正规表达式、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python-正则表达式">
+<meta property="og:url" content="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/index.html">
+<meta property="og:site_name" content="简问">
+<meta property="og:description" content="正则表达式（英语：Regular Expression，在代码中常简写为regex、regexp或RE），又称正规表示式、正规表示法、正规表达式、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/zz_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/zz_2.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/zz_3.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/zz_4.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/zz_5.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/zz_6.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/zz_7.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/zz_8.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/zz_9.png">
+<meta property="og:updated_time" content="2019-04-23T02:56:28.601Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python-正则表达式">
+<meta name="twitter:description" content="正则表达式（英语：Regular Expression，在代码中常简写为regex、regexp或RE），又称正规表示式、正规表示法、正规表达式、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。">
+<meta name="twitter:image" content="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/zz_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/">
+
+
+
+
+
+  <title>Python-正则表达式 | 简问</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?02c20c7fa12243b5d306df03ad146893";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简问</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/23/Python/随笔-Python-正则表达式/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="trobr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简问">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python-正则表达式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-23T10:56:28+08:00">
+                2019-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/23/Python/随笔-Python-正则表达式/" class="leancloud_visitors" data-flag-title="Python-正则表达式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>正则表达式（英语：Regular Expression，在代码中常简写为regex、regexp或RE），又称正规表示式、正规表示法、正规表达式、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。</p>
+<a id="more"></a>
+<!-- toc -->
+<ul>
+<li><a href="#1-什么是正则表达式">1 什么是正则表达式</a></li>
+<li><a href="#2-正则表达式常用规则">2 正则表达式常用规则</a><ul>
+<li><a href="#21-匹配任意字符">2.1 匹配任意字符</a></li>
+<li><a href="#22-重复匹配的元字符">2.2 重复匹配的元字符</a></li>
+<li><a href="#23-限定范围的匹配">2.3 限定范围的匹配</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<p>正则表达式（基础篇）：</p>
+<h1><span id="1-什么是正则表达式">1 什么是正则表达式</span></h1><blockquote>
+<p>正则表达式（英语：Regular Expression，在代码中常简写为regex、regexp或RE），又称正规表示式、正规表示法、正规表达式、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。                         —Wikipedia</p>
+</blockquote>
+<p>简单的来说，正则表达式就是一个字符串，代表了一定的格式，然后我们用这个字符串去判断另外一个字符串中有没有符合这个格式的字符串。例如有一串记录了学生姓名学号等信息的字符串</p>
+<pre><code>student = &#39;张三 2017612403&#39;
+</code></pre><p>现在想把这个字符串中学生的学号也就是“2017612403”这个字符串提取出来，已知学号都是10位的。使用最简单的正则表达式怎么做呢？如下：</p>
+<pre><code>p1 = r&#39;2017612403&#39;
+regular=re.compile(p1)
+print(regular.findall(student))
+</code></pre><p>是不是很简单，前面说过，正则表达式表示的其实就是一个格式，然后程序用在另一个字符串中找到符合这个格式的字符串，上面这个程序中，第一句话设置正则表达式的字符串，这里是<code>p1 = r&#39;2017612403&#39;</code>。然后第二句话表示将字符串编译成一个正则表达式（Pattern）对象，也就是把字符串转换成其对应的格式，这里的格式就是表示从待匹配的字符串中寻找一个<code>2017612403</code>子字符串。第三句话就是执行正则表达式寻找待匹配字符串中满足格式的子字符串了，如果匹配到，python中会返回所有匹配的子字符串列表。执行结果如下：<br><img src="/2019/04/23/Python/随笔-Python-正则表达式/zz_1.png" width="123"></p>
+<p>所以说，可以简单地将正则表达式理解为表达了一定格式的字符串，程序通过这个格式，在待匹配的字符串中寻找满足这个格式的子字符串，并返回所有找到的子字符串的列表(python)。</p>
+<h1><span id="2-正则表达式常用规则">2 正则表达式常用规则</span></h1><h2><span id="21-匹配任意字符">2.1 匹配任意字符</span></h2><p>假设有一段字符串：</p>
+<pre><code>test = ‘gcc hello.c`
+</code></pre><p>需要从中将hello.c匹配出来，可以使用正则表达式：</p>
+<pre><code>p1 = r`\s.+\.c`
+</code></pre><p>执行结果：</p>
+<img src="/2019/04/23/Python/随笔-Python-正则表达式/zz_2.png" width="111">
+<p>现在解释一下上面的正则表达式：<code>r&#39;\s.+\.c</code>、<code>\s</code>、<code>+</code>都是正则表达式中的元字符，正则表达式中常用的元字符定义为：</p>
+<p>|:-:|:-:|<br>|.        |代表任意字符<br>||     |逻辑或操作符|<br>|[ ]    |    匹配内部的任一字符或子表达式<br>|<sup><a href="#fn_" id="reffn_"></a></sup>    |    对字符集和取非<br>|-        |定义一个区间<br>|\        |对下一字符取非（通常是普通变特殊，特殊变普通）<br>|<em>        |匹配前面的字符或者子表达式0次或多次<br>|</em>?        |惰性匹配上一个<br>|+        |匹配前一个字符或子表达式一次或多次<br>|+?        |惰性匹配上一个<br>|?        |匹配前一个字符或子表达式0次或1次重复<br>|{n}    |匹配前一个字符或子表达式<br>|{m,n}    |匹配前一个字符或子表达式至少m次至多n次<br>|{n,}    |匹配前一个字符或者子表达式至少n次<br>|{n,}?    |前一个的惰性匹配<br>|^        |匹配字符串的开头<br>|\A        |匹配字符串开头<br>|$$        |匹配字符串结束<br>|[\b]    |退格字符<br>|\c        |匹配一个控制字符<br>|\d        |匹配任意数字<br>|\D        |匹配数字以外的字符<br>|\t        |匹配制表符<br>|\w        |匹配任意数字字母下划线<br>|\W        |不匹配数字字母下划线<br>从表中我们知道，<code>\s</code>表示匹配任意的空白字符一次，<code>.</code>表示匹配任意字符（换行符除外）一次，有关<code>+</code>的详细规则将在2.2中介绍，现在只需要知道它的作用是重复匹配其前面的字符，比如这里，<code>+</code>前面的字符是<code>.</code>，就表示在这里可以有任意数量的字符，而且字符的内容也是任意的。于是上述正则表达式<code>r&#39;\s.+\.c</code>就可以知道其作用如下：<br>需要匹配的格式为：以一个空白字符开始，紧跟着任意个数的任意字符，并以<code>.c</code>格式结尾，也就是<code>xxx.c</code>这种格式。</p>
+<h2><span id="22-重复匹配的元字符">2.2 重复匹配的元字符</span></h2><p>上面已经了解了什么是正则表达式，也了解了重复匹配元字符<code>+</code>的用法。现在看一下1中的正则表达式，会发现它只能匹配<code>2017612403</code>这一个字符串，如果需要提取一个班中所有人的学号，用上面的正则表达式的话，岂不是要将所有人的学号都列出来，这样还需要程序干嘛？下面介绍正则表达式的一些基本规则，使用这些规则我们可以写出灵活度很高的匹配规则。<br>还是上面的例子，如果一个班有60人，学生的信息都以”姓名 学号”的格式储存在all_student这个列表中，需要提取所有人的学号信息，如果不用正则表达式，在python中可以使用下面的语句：</p>
+<pre><code>all_student_id = [student[-10:] for student in all_student]
+</code></pre><p>这样的问题是，如果student的格式稍微改变一下或添加了其他的信息，如写成：</p>
+<pre><code>student = “张三 2017612403 22 电子信息工程”
+</code></pre><p>那上面的语句就失效了，有没有一种方法能准确的将字符串中十位数的学号提取出来呢？这里就需要使用正则表达式了。先看一下正则表达式里面提取十位数学号的办法：</p>
+<pre><code>p1 = r`\d{10}?`
+regular=re.compile(p1)
+print(reg    ular.findall(student))
+</code></pre><p>这里的p1就是正则表达式的字符串，现在看不懂没关系，只需要知道这个正则表达式表示的格式是一个十个数字的字符串，那么执行<code>regular.findall(student)</code>后，正则表达式就会再student这个字符串中寻找一个十个数字的字符串。执行结果：<br><img src="/2019/04/23/Python/随笔-Python-正则表达式/zz_3.png" width="111"></p>
+<p>现在来解释一下上面的正则表达式。正则表达式的字符串为r<code>\d{10}?</code>，整个正则表达式可以分解为三部分：<code>\d`、`{10}`、`?</code>，这里的<code>\d`、`{}`、`?</code>也是正则表达式中的元字符。<br><code>\d</code>表示需要匹配字符串中的任意一个数字，注意是一个，上面这个例子中，如果设置正则表达式为<code>\d</code>的执行结果是这样的：<br><img src="/2019/04/23/Python/随笔-Python-正则表达式/zz_4.png" width="111"></p>
+<p>发现虽然数字都匹配出来了，但是每个数字都被分开了，如果需要匹配很多个数字怎么办呢？—使用<code>+</code>或<code>\*</code>这个元字符，<code>+</code>表示匹配一个或多个前一个字符，<code>\*</code>表示匹配0个或多个前一个字符如果这样用的话：<code>r</code>\d+``就代表匹配一个或多个数字，看一下执行结果：<br><img src="/2019/04/23/Python/随笔-Python-正则表达式/zz_5.png" width="111"></p>
+<p>可以看见使用<code>r\d+</code>也将我们需要的学号提取出来了。但是从元字符<code>+</code>的定义中可以发现，元字符<code>+</code>只是表示匹配一个或多个其前一个字符，没有指定匹配多少次，那么如果待匹配的字符串中有多个数字串的话，比如这样的：</p>
+<pre><code>student = “张三 2017612403 22 电子信息工程”
+</code></pre><p>那么正则表达式就会把我们不需要的字符也匹配出来了：<br><img src="/2019/04/23/Python/随笔-Python-正则表达式/zz_6.png" width="111"></p>
+<p>那么如何指定匹配字符的个数呢？这里就需要用到<code>{}</code>这个元字符了。有关<code>{}</code>的详细介绍可以看上面的表格，<code>{n}</code>表示匹配n个前面的字符，已知学号是10位，那么可以用r<code>\d{10}</code>来从待匹配字符串中寻找10个连续的数字，也就是我们要提取的学号。<br>那么只剩最后一个问题了，一开始的正则表达式中的r<code>\d{10}?</code>中的<code>?</code>是干什么的呢？从<code>?</code>元字符的定义中，可以知道它的作用是惰性匹配又称贪婪匹配。</p>
+<h2><span id="23-惰性匹配与贪婪匹配">2.3 惰性匹配与贪婪匹配</span></h2><p>贪婪匹配就是从待匹配字符串中一次性尽可能多的匹配字符，惰性匹配就是从待匹配字符串中一次性尽可能少的匹配字符。<br>从2.1中可以知道，元字符<code>+</code>、<code>\*</code>、<code>{}</code>可以从待匹配字符串中重复匹配某一个指定的字符，那么就存在这种情况：</p>
+<pre><code>test = &#39;This is a &lt;EM&gt;first&lt;/EM&gt; test&#39;
+</code></pre><p>需要从test中匹配两次分别得到<code>&lt;EM&gt;</code>和<code>&lt;/EM&gt;</code>，根据上面的知识，应该用正则表达式：<code>r&#39;&lt;.+&gt;&#39;</code>，但实际上这个表达式执行的结果是：<br><img src="/2019/04/23/Python/随笔-Python-正则表达式/zz_7.png" width="111"></p>
+<p>这是因为python中默认的匹配模式是贪婪匹配，当表达式匹配到一个<code>&gt;</code>后，会再次尝试从后面的字符串中匹配<code>&gt;</code>，直到遇到换行符，所以这里会一直匹配<code>&lt;EM&gt;first&lt;/EM&gt;</code>，而不是<code>&lt;EM&gt;</code>。为了改变这种行为，需要将匹配模式设置为惰性匹配模式，惰性匹配模式下，当表达式匹配到第一个<code>&gt;</code>后，就会直接返回。通过元字符<code>?</code>可以将其前面的字符匹配模式设置为惰性匹配模式。</p>
+<h2><span id="23-限定范围的匹配">2.3 限定范围的匹配</span></h2><p>我们知道web通过<code>&lt;h1&gt;&lt;/h1&gt;、&lt;h2&gt;&lt;/h2&gt;</code>这种表示一级标题、二级标题等，如果现在需要提取一个web中三级标题到6级标题中的内容，使用上面的知识，很容易知道，可以使用下面的正则表达式来提取:</p>
+<pre><code>p1 = r&#39;&lt;h3&gt;.+&lt;/h3&gt;?&#39;
+p2 = r&#39;&lt;h4&gt;.+&lt;/h4&gt;?&#39;
+p3 = r&#39;&lt;h5&gt;.+&lt;/h5&gt;?&#39;
+</code></pre><p>这样写起来十分繁琐，而且如果需要匹配的范围是一个很大的范围，就没有办法使用这种方式进行匹配，为了解决这个问题，就需要用到正则表达式范围匹配的规则：<code>[]</code>。<code>[]</code>中括号中表示了当前位置字符需要满足的取值范围。假设有下面一段待匹配字符串：</p>
+<pre><code>test = r`css tss gss rss`
+</code></pre><p>只需要将test中以字符<code>c、t、r</code>开头的单词提取出来，可以使用下面的正则表达式：</p>
+<pre><code>p1 = r&#39;[ctr]ss&#39;
+</code></pre><p>执行结果：<br><img src="/2019/04/23/Python/随笔-Python-正则表达式/zz_8.png" title="pic/pattern/zz_8.png"></p>
+<p><code>[]</code>元字符中，在中括号里面的是当前位置上的字符的取值范围，上面的例子表示<code>ss</code>前面的字母只能是<code>c</code>、<code>t</code>、<code>r</code>中的一个。<br>有了限定范围的匹配，正则表达式的规则中，也有限定范围内排除的规则，使用元字符<code>[^]</code>来表示，如上面的例子，如果正则表达式写成：</p>
+<pre><code>p1 = r&#39;[^ctr]ss&#39;
+</code></pre><p>就会把<code>ss</code>前面的字母除了<code>c</code>、<code>t</code>、<code>r</code>之外的单词匹配出来。执行结果：<br><img src="/2019/04/23/Python/随笔-Python-正则表达式/zz_9.png" title="pic/pattern/zz_9.png"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/23/深度学习/评估方法/mAP/随笔-mAP计算/" rel="next" title="mAP计算">
+                <i class="fa fa-chevron-left"></i> mAP计算
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/23/杂谈/Windows杂谈/随笔-关于移动硬盘-U盘无法弹出/" rel="prev" title="关于移动硬盘-U盘无法弹出">
+                关于移动硬盘-U盘无法弹出 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">trobr</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/trobr" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wyf5249@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">1 什么是正则表达式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">2 正则表达式常用规则</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 匹配任意字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 重复匹配的元字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 惰性匹配与贪婪匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.4.</span> <span class="nav-text">2.3 限定范围的匹配</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">trobr</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("i1hFCrHSRXoVXveSnCHU0HE3-gzGzoHsz", "3b5qD3myoCLUirP0yOGPSHWR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

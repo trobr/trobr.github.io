@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="深度学习,PyTorch,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="PyTorch是使用GPU和CPU优化的深度学习张量库。">
+<meta name="keywords" content="深度学习,PyTorch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch入门">
+<meta property="og:url" content="http://yoursite.com/2019/04/23/深度学习/PyTorch/随笔-PyTorch入门/index.html">
+<meta property="og:site_name" content="简问">
+<meta property="og:description" content="PyTorch是使用GPU和CPU优化的深度学习张量库。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-23T02:56:28.785Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PyTorch入门">
+<meta name="twitter:description" content="PyTorch是使用GPU和CPU优化的深度学习张量库。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/23/深度学习/PyTorch/随笔-PyTorch入门/">
+
+
+
+
+
+  <title>PyTorch入门 | 简问</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?02c20c7fa12243b5d306df03ad146893";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简问</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/23/深度学习/PyTorch/随笔-PyTorch入门/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="trobr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简问">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PyTorch入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-23T10:56:28+08:00">
+                2019-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/深度学习/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/23/深度学习/PyTorch/随笔-PyTorch入门/" class="leancloud_visitors" data-flag-title="PyTorch入门">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>PyTorch是使用GPU和CPU优化的深度学习张量库。</p>
+<a id="more"></a>
+<!-- toc -->
+<ul>
+<li><a href="#torchtensor">torch.Tensor</a><ul>
+<li><a href="#初始化张量">初始化张量</a></li>
+<li><a href="#tensor与numpy相互转换">tensor与numpy相互转换</a></li>
+</ul>
+</li>
+<li><a href="#torchautograd">torch.autograd</a></li>
+<li><a href="#torchutils">torch.utils</a><ul>
+<li><a href="#torchutilsdata">torch.utils.data</a><ul>
+<li><a href="#torchutilsdatadataset">torch.utils.data.Dataset</a></li>
+<li><a href="#torchutilsdatadataloader">torch.utils.data.Dataloader</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#torchnn">torch.nn</a><ul>
+<li><a href="#损失函数">损失函数</a></li>
+<li><a href="#faq">FAQ</a><ul>
+<li><a href="#关于损失函数打印值一直是整数的问题">关于损失函数打印值一直是整数的问题</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#torchcuda">torch.cuda</a><ul>
+<li><a href="#将代码计算从cpu转移到gpu">将代码计算从cpu转移到gpu</a></li>
+<li><a href="#模型">模型</a></li>
+<li><a href="#张量">张量</a></li>
+</ul>
+</li>
+<li><a href="#torchvisiondatasets">torchvision.datasets</a><ul>
+<li><a href="#datasetsmnist">datasets.MNIST</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<p>[TOC]</p>
+<hr>
+<h1><span id="torchtensor">torch.Tensor</span></h1><h2><span id="初始化张量">初始化张量</span></h2><p>张量类似于NumPy的ndarray，另外还有Tensors也可用于GPU以加速计算。<br>与numpy相似，PyTorch中张量的顺序为<code>(行, 列)</code><br>下列方法均可用于初始化张量：</p>
+<pre><code>torch.tensor()
+torch.Tensor()
+torch.FloatTensor()
+torch.xxxTensor()
+...
+</code></pre><p>其中<code>Tensor()</code>方法是<code>FloatTensor()</code>的别名，效果一致。<code>xxxTensor()</code>方法中<code>xxx</code>为要创建的tensor类型。<br><code>tensor()</code>方法与<code>Tensor()</code>方法的区别在于，<code>tensor()</code>方法只接受一个参数，通过<code>tensor()</code>方法可以立即Python的列表、元组或者numpy的数组中初始化tensor。而<code>Tensor()</code>方法在只有一个参数时与<code>tensor()</code>一致，而接受多个参数时，<code>Tensor()</code>方法将这些参数视为将要创建的tensor的维数。</p>
+<pre><code>a = torch.tensor(3)
+b = torch.tensor((2, 3, 2))
+c = torch.Tensor(3)
+d = torch.Tensor((2, 3, 2))
+e = torch.Tensor(2, 3, 2)
+</code></pre><p>输出如下：</p>
+<pre><code>tensor(3)
+tensor([2, 3, 2])
+tensor([ 0.0000e+00,  0.0000e+00, -2.5319e+29])
+tensor([2., 3., 2.])
+tensor([[[0., 0.],
+        [0., 0.],
+        [0., 0.]],
+
+        [[0., 0.],
+        [0., 0.],
+        [0., 0.]]])
+</code></pre><h2><span id="tensor与numpy相互转换">tensor与numpy相互转换</span></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tensor -&gt; numpy</span></span><br><span class="line">a = torch.rand(<span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line">na = a.numpy()</span><br><span class="line"></span><br><span class="line"><span class="comment"># numpy -&gt; tensor</span></span><br><span class="line">b = np.random.rand(<span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line">tb = torch.from_numpy(b)</span><br></pre></td></tr></table></figure>
+<p><strong>注意：上述两个操作都不复制数据，转换前后tensor和numpy使用同一个地址空间，修改其中一个另外一个也会修改</strong></p>
+<h1><span id="torchautograd">torch.autograd</span></h1><p>通过对变量设置<code>requires_grad=True</code>属性来使PyTorch对变量自动求导<br><strong><code>requires_grad=True</code>只能对叶子节点设置，也只能在<code>backward</code>操作后得到对叶子节点的梯度值。</strong></p>
+<pre><code>torch.autograd.backward(tensors, grad_tensors=None, retain_graph=None, create_graph=False, grad_variables=None)
+</code></pre><p>假设<script type="math/tex">Z</script>是标量，则计算<script type="math/tex">Z</script>对叶子节点<script type="math/tex">X=(x_1,x_2,...,x_n)</script>（即最初的输入）的倒数只要执行<code>z.backward()</code>，然后使用<code>x_n.grad</code>即可。<br>而如果<script type="math/tex">Z</script>是矢量，那么<code>torch.autograd.backward(Z, W)</code>实际上计算的是<script type="math/tex">x.grad=W*\frac{dZ}{dX}</script>的值，其中<code>w</code>是与<code>z</code>有相同大小的张量。计算过程是先计算<script type="math/tex">u=\sum_i^nz_i*w_i</script>得到一个标量<script type="math/tex">u</script>,再计算标量<script type="math/tex">u</script>对<script type="math/tex">x</script>的导数。<strong>通过<script type="math/tex">W</script>就可以控制张量<script type="math/tex">Z</script>中那些值对<script type="math/tex">X</script>的导数有影响</strong>。（如：<script type="math/tex">W=(0, 1, 1, 0)</script>而<script type="math/tex">Z=(z_1,z_2,z_3,z_4)</script>，则执行<code>Z.backward(W)</code>后，就可以计算<script type="math/tex">z_2,z_3</script>对<script type="math/tex">X</script>的导数，而忽视<script type="math/tex">z_1,z_4</script>的影响。<br>参考：<a href="https://zhuanlan.zhihu.com/p/29923090" target="_blank" rel="noopener">PyTorch 的 backward 为什么有一个 grad_variables 参数？</a></p>
+<hr>
+<h1><span id="torchutils">torch.utils</span></h1><p><span id="torch.utils.data"></span></p>
+<h2><span id="torchutilsdata">torch.utils.data</span></h2><p><span id="torch.utils.data.Dataset"></span> </p>
+<h3><span id="torchutilsdatadataset">torch.utils.data.Dataset</span></h3><p><code>torch.utils.data.Dataset</code>是PyTorch中表示数据集的抽象类<br>如果需要定义我们自己的数据集类，需要继承<code>torch.utils.data.Dataset</code>类，并且重写类的<code>__len__</code>和<code>__getitem__</code>方法。其中<code>__len__</code>用于获取数据长度，而<code>__getitem__</code>使得类的对象支持从<code>0</code>到<code>len(self)</code>的整数索引。<br>这里以实现PyTorch读取<code>VOC</code>数据集的读取为例子。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.utils <span class="keyword">import</span> data</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">brVocClassfier</span><span class="params">(data.Dataset)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    @brife: VOC dataset support like torchvision</span></span><br><span class="line"><span class="string">    @note: not support download</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, root, train=True, transform=None, target_transform=None, download=False)</span>:</span></span><br><span class="line">        super(brVocClassfier, self).__init__()</span><br><span class="line">        </span><br><span class="line">        self.xxx = xxx                              <span class="comment"># 设置root、trian等属性</span></span><br><span class="line">        self.load_label()                           <span class="comment"># 加载用于训练或测试的图像和其对应的标签，保存在self.class_map字典中</span></span><br><span class="line">        self.trian_files = list(self.class_map.keys())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        @brife: overwrite the __getitem__ method</span></span><br><span class="line"><span class="string">                function return one image and labels with Tensor</span></span><br><span class="line"><span class="string">                根据self.trian_files和index从磁盘中读取图像，并与其对应的标签一起返回</span></span><br><span class="line"><span class="string">        @note: if transform is not None, do transform before return</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        file = self.trian_files[index]</span><br><span class="line">        label = self.class_map[file]</span><br><span class="line">        file = os.path.join(self.jpg_path, file + <span class="string">'.jpg'</span>)</span><br><span class="line">        image = PIL.Image.open(file)                  <span class="comment"># PIL读取图像，Pytorch对numpy支持没有PIL好，所以没用OpenCV读取</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.transform <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="string">'''</span></span><br><span class="line"><span class="string">            1. 如果指定了transform函数，则对图像或label执行transform</span></span><br><span class="line"><span class="string">            2. 如果batch_size大于1，且数据集中图片大小不一致</span></span><br><span class="line"><span class="string">                则记得要在transform中添加Resize函数，否则读取的图片每个大小不一样，会报错</span></span><br><span class="line"><span class="string">            '''</span></span><br><span class="line">            image = self.transform(image)</span><br><span class="line">        <span class="keyword">if</span> self.target_transform <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            label = self.target_transform(label)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> image, label</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.trian_files)</span><br></pre></td></tr></table></figure></p>
+<p>重写了<code>torch.utils.data.Dataset</code>继承的类后，就可以像操作PyTorch内置的MNIST等数据集一样操作我们自定义的数据集。<br>因为我们类中重写了<code>__getitem__</code>方法，因此可以直接使用索引读取图像和标签。或者使用<a href="#torch.utils.data.Dataloader"><code>torch.utils.data.Dataloader</code></a><br><strong>参考</strong>：<br><a href="https://blog.csdn.net/qq_36653505/article/details/83351808" target="_blank" rel="noopener">pytorch源码分析之torch.utils.data.Dataset类和torch.utils.data.DataLoader类</a><br><a href="https://arleyzhang.github.io/articles/1dc20586/" target="_blank" rel="noopener">目标检测数据集PASCAL VOC简介</a><br><a href="https://www.pytorchtutorial.com/pytorch-custom-dataset-examples/" target="_blank" rel="noopener">PyTorch 中自定义数据集的读取方法小结</a></p>
+<p><span id="torch.utils.data.Dataloader"></span> </p>
+<h3><span id="torchutilsdatadataloader">torch.utils.data.Dataloader</span></h3><p>PyTorch 中的<code>Dataloader</code>只是调用<code>torch.utils.data.Dataset</code>类的<code>__getitem__()</code> 方法并组合成 batch,类原型为：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">torch.utils.data.DataLoader(</span><br><span class="line">    dataset, batch_size=<span class="number">1</span>, shuffle=<span class="keyword">False</span>, sampler=<span class="keyword">None</span>, batch_sampler=<span class="keyword">None</span>, </span><br><span class="line">    num_workers=<span class="number">0</span>, collate_fn=&lt;function default_collate&gt;, pin_memory=<span class="keyword">False</span>, </span><br><span class="line">    drop_last=<span class="keyword">False</span>, timeout=<span class="number">0</span>, worker_init_fn=<span class="keyword">None</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>实例化类时，需要传入dataset对象，该对象从<code>torch.utils.data.Dataset</code>继承而来，并且重写了<code>__len__</code>和<code>__getitem__</code>方法，使用方法为：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">transform = transforms.Compose([</span><br><span class="line">    transforms.Resize((<span class="number">300</span>, <span class="number">300</span>)),</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    transforms.Normalize([<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>], [<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>])</span><br><span class="line">])</span><br><span class="line">train_voc = brVocClassfier(</span><br><span class="line">    voc_path, train=<span class="keyword">True</span>,</span><br><span class="line">    transform=transform</span><br><span class="line">)</span><br><span class="line">train_data = data.DataLoader(</span><br><span class="line">    dataset=train_voc, batch_size=<span class="number">12</span>, shuffle=<span class="keyword">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> image, label <span class="keyword">in</span> train_data:</span><br><span class="line">    print(label)</span><br><span class="line">    print(image.size())</span><br></pre></td></tr></table></figure></p>
+<p>/<br>/////<br>/</p>
+<hr>
+<h1><span id="torchnn">torch.nn</span></h1><h2><span id="损失函数">损失函数</span></h2><p>pass</p>
+<h2><span id="faq">FAQ</span></h2><h3><span id="关于损失函数打印值一直是整数的问题">关于损失函数打印值一直是整数的问题</span></h3><p>在训练网络的时候，我们需要记录每个epoch损失函数的的累加值，来判断网络是否按照预期训练以及是否收敛，这里有一个地方需要注意，否则记录的损失值不正确，代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> idx <span class="keyword">in</span> range(EPOCH):</span><br><span class="line">    total_loss = torch.tensor([<span class="number">0</span>]).to(device)</span><br><span class="line">    <span class="keyword">for</span> step, (image, label) <span class="keyword">in</span> enumerate(self.trainloader):</span><br><span class="line">        image = image.to(device)</span><br><span class="line">        label = label.to(device)</span><br><span class="line"></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        out = model(image)</span><br><span class="line">        loss = criterion(out, label)</span><br><span class="line">        loss.backward()</span><br><span class="line">        total_loss += loss.item()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        print((<span class="string">'after %d epoch train: total_loss is :%f'</span> %</span><br><span class="line">                       (idx, total_loss.item()))</span><br></pre></td></tr></table></figure></p>
+<p>但是上面的代码在打印的损失却是这样的<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">after 0 epoch train: total_loss is :216.000000</span><br><span class="line">after 1 epoch train: total_loss is :3.000000</span><br><span class="line">after 2 epoch train: total_loss is :1.000000</span><br><span class="line">after 3 epoch train: total_loss is :0.000000</span><br></pre></td></tr></table></figure></p>
+<p>可以看到虽然损失一直在减少，但是打印出来的损失值确一直类似是整数，到后面甚至变成0，而正常的损失值应该是小数，造成这样的原因是因为在定义<code>total_loss</code>的时候将变量的类型设置为了整形。所以应该将下面：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">total_loss = torch.tensor([<span class="number">0</span>]).to(device)</span><br></pre></td></tr></table></figure></p>
+<p>改为<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">total_loss = torch.tensor([<span class="number">0.</span>]).to(device)</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1><span id="torchcuda">torch.cuda</span></h1><p><span id="convert_pytorch_cpu_code_to_gpu"></span></p>
+<h2><span id="将代码计算从cpu转移到gpu">将代码计算从cpu转移到gpu</span></h2><p>PyTorch很容易编写cpu与gpu代码，对于已有的cpu代码，只需要从<strong>模型</strong>和<strong>张量</strong>两个方面修改即可</p>
+<h2><span id="模型">模型</span></h2><p>因为我们的模型都是从<code>torch.nn.Module</code>继承的，因此模型从cpu转移到gpu可以使用父类中的<code>cuda()</code>方法，或者使用类的<code>to()</code>方法<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Net</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(Net, self).__init__()</span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">net = Net()     <span class="comment">#cpu模型</span></span><br><span class="line"><span class="keyword">if</span> torch.cuda.is_available():</span><br><span class="line">    net = net.cuda()      <span class="comment">#gpu模型</span></span><br></pre></td></tr></table></figure></p>
+<p>或者：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">device = torch.device(<span class="string">"cuda:0"</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">"cpu"</span>)</span><br><span class="line">net = net.to(device)     <span class="comment"># or `net.to(device)` is also</span></span><br></pre></td></tr></table></figure></p>
+<h2><span id="张量">张量</span></h2><p>对于需要使用gpu进行运算的张量，同样使用<code>torch.Tensor.cuda()</code>方法将张量从cpu转移到gpu。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> step, (inputv, target) <span class="keyword">in</span> enumerate(train_data):</span><br><span class="line">    inputv = inputv.view(inputv.size()[<span class="number">0</span>], inputv.size()[<span class="number">-1</span>] ** <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> torch.cuda.is_available():</span><br><span class="line">        inputv = inputv.cuda()</span><br></pre></td></tr></table></figure></p>
+<p>或者：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inputv = inputv.to(device)</span><br></pre></td></tr></table></figure></p>
+<p>需要注意的是，如果<code>cuda()</code>方法没有参数，则将张量转移到<code>torch.cuda.current_device()</code>方法所指的gpu上。不同gpu之间的张量或者cpu和gpu的张量之间不能直接运算。</p>
+<hr>
+<h1><span id="torchvisiondatasets">torchvision.datasets</span></h1><p><code>torchvision</code>中的<code>dataset</code>模块可以读取常见的数据集，并在读取时将数据按照指定的格式转换。<br>(<strong>待验证</strong>)<code>torchvision</code>中的<code>datasets</code>是对<code>torch.utils.data.Dataset</code>模块的高级封装，理解这里只需理解<a href="#torch.utils.data"><code>torch.utils.data</code></a>模块的一些方法即可</p>
+<h2><span id="datasetsmnist">datasets.MNIST</span></h2><p>datasets中的MNIST模块可以用来读取MNIST数据集。原型为：</p>
+<pre><code>torchvision.datasets.MNIST(root, train=True, transform=None, target_transform=None, download=False)
+</code></pre><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>root</code></td>
+<td style="text-align:center">表示MNIST主目录，如果数据集已经下载，则是数据集的主目录，如果没有下载，则是存放数据集的目录</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>train</code></td>
+<td style="text-align:center"><code>=True</code>表示加载MNIST的训练数据，否则表示加载测试数据</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>transform</code></td>
+<td style="text-align:center">表示加载数据时对数据进行的操作，<code>dataset.transform</code>模块中内置了很多操作，一般来说这里用来把原始数据转换成tensor格式或进行数据增强</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>target_transform</code></td>
+<td style="text-align:center">同上，但是转换的时标签数据</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>download</code></td>
+<td style="text-align:center"><code>=True</code>时从网上下载数据，否则使用本地数据</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>使用方法如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">transform = transforms.Compose([</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    <span class="comment"># torch.Tensor.view(1, -1)</span></span><br><span class="line">])</span><br><span class="line">mnist = torchvision.datasets.MNIST(root_path, transform=transform)</span><br></pre></td></tr></table></figure></p>
+<p><code>transform</code>定义了一组操作，用于在数据加载进来后的操作。加载后<code>mnist.train_data/mnist.test_data</code>表示训练或测试数据，<code>mnist.train_labels/mnist.test_labels</code>表示训练或测试标签。返回一个<code>torch.utils.data.Dataset</code>类的对象，因此可以直接对返回的对象进行索引获取值。<br>除了上述方法外，还可以使用<a href="#torch.utils.data.Dataloader">torch.utils.data.DataLoader</a>的<code>DataLoader</code></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/23/机器学习/反向传播算法/随笔-bp神经网络/" rel="next" title="bp神经网络">
+                <i class="fa fa-chevron-left"></i> bp神经网络
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/23/机器学习/k-means/随笔-K-Means聚类算法/" rel="prev" title="K-Means聚类算法">
+                K-Means聚类算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">trobr</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/trobr" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wyf5249@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">torch.Tensor</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">初始化张量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">tensor与numpy相互转换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">torch.autograd</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">torch.utils</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.1.</span> <span class="nav-text">torch.utils.data</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">3.1.1.</span> <span class="nav-text">torch.utils.data.Dataset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">3.1.2.</span> <span class="nav-text">torch.utils.data.Dataloader</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">torch.nn</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">4.1.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">4.2.</span> <span class="nav-text">FAQ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.2.1.</span> <span class="nav-text">关于损失函数打印值一直是整数的问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">torch.cuda</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">5.1.</span> <span class="nav-text">将代码计算从cpu转移到gpu</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">5.2.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">5.3.</span> <span class="nav-text">张量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">torchvision.datasets</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">6.1.</span> <span class="nav-text">datasets.MNIST</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">trobr</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("i1hFCrHSRXoVXveSnCHU0HE3-gzGzoHsz", "3b5qD3myoCLUirP0yOGPSHWR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

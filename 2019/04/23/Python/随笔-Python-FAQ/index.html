@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="记录Python使用过程中遇到的各种问题">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python-FAQ">
+<meta property="og:url" content="http://yoursite.com/2019/04/23/Python/随笔-Python-FAQ/index.html">
+<meta property="og:site_name" content="简问">
+<meta property="og:description" content="记录Python使用过程中遇到的各种问题">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-23T02:56:28.515Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python-FAQ">
+<meta name="twitter:description" content="记录Python使用过程中遇到的各种问题">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/23/Python/随笔-Python-FAQ/">
+
+
+
+
+
+  <title>Python-FAQ | 简问</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?02c20c7fa12243b5d306df03ad146893";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简问</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/23/Python/随笔-Python-FAQ/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="trobr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简问">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python-FAQ</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-23T10:56:28+08:00">
+                2019-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/23/Python/随笔-Python-FAQ/" class="leancloud_visitors" data-flag-title="Python-FAQ">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>记录Python使用过程中遇到的各种问题</p>
+<a id="more"></a>
+<!-- toc -->
+<ul>
+<li><a href="#argparse获取命令行传进的路径">argparse获取命令行传进的路径</a></li>
+<li><a href="#python-字典相关">python 字典相关</a></li>
+<li><a href="#python截断浮点数">Python截断浮点数：</a></li>
+<li><a href="#lambda及sorted">lambda及sorted</a></li>
+<li><a href="#python-可变对象作为默认参数">python 可变对象作为默认参数</a></li>
+<li><a href="#python-静态成员变量的访问">python 静态成员变量的访问</a></li>
+<li><a href="#python-循环删除列表">python 循环删除列表</a></li>
+</ul>
+<!-- tocstop -->
+<p><strong>python常见问题见<a href="https://github.com/leisurelicht/wtfpython-cn?utm_source=gold_browser_extension" target="_blank" rel="noopener">What the fuck Python!</a></strong></p>
+<h2><span id="argparse获取命令行传进的路径">argparse获取命令行传进的路径</span></h2><p>命令行穿路径时，路径需要加冒号，否则argparse接收到的路径没有反斜杠’\’<br>参考： <a href="https://stackoverflow.com/questions/18157376/handle-spaces-in-argparse-input" target="_blank" rel="noopener">Handle spaces in argparse input</a></p>
+<h2><span id="python-字典相关">python 字典相关</span></h2><ol>
+<li>字典只能通过键值访问。</li>
+<li>字典不是序列，没有从左到右的顺序，输出字典时可能和输入的顺序不同</li>
+</ol>
+<h2><span id="python截断浮点数">Python截断浮点数：</span></h2><ul>
+<li>math.trunc 不管是在Python2.7或者是Python3.5版本中最终的结果都是<code>截断</code>之后的<code>整数</code></li>
+<li>math.ceil 返回大于或等于输入浮点数的最小整数</li>
+<li>math.floor返回小于或等于输入浮点数的最大整数</li>
+</ul>
+<h2><span id="lambda及sorted">lambda及sorted</span></h2><p>lambda语句中，冒号前是参数，可以有多个，用逗号隔开，冒号右边的返回值。lambda语句构建的其实是一个函数对象，如排序函数sorted中，key参数表示一个只有一个参数的函数，这个函数会被应用在序列里每一个元素上，所产生的结果将是排序算法依赖的对比关键字。如有一个列表：</p>
+<pre><code>ll = [&#39;31546&#39;, &#39;96855&#39;, &#39;48257&#39;, &#39;17964&#39;]
+</code></pre><p>需要根据列表中每一个字符串的第二个字符进行排序，则可以定义如下函数：</p>
+<pre><code>def get_item2(a):
+    return a[1]
+</code></pre><p>函数接受一个字符串，并返回字符串第二个字符，将这个函数作为sorted中key关键字的值，即可在排序中使用序列里面每个元素的第二个字符进行排序，如下：</p>
+<pre><code>sorted(ll, key=get_item2)
+</code></pre><p>但是这种方法需要定义一个额外的函数，且只在sorted中使用，不美观，则可以使用lambda表达式代替get_item2函数，如下：</p>
+<pre><code>sorted(ll, key=lambda x: x[1])
+</code></pre><p>Lambda后紧跟的是匿名函数的输入参数，多个参数用逗号隔开，冒号后面的是函数的返回值，从上图中，可见lambda表达式产生的匿名函数的只有一个输入参数，返回该输入的第二个元素。</p>
+<h2><span id="python-可变对象作为默认参数">python 可变对象作为默认参数</span></h2><p>参考：<a href="http://www.cnblogs.com/xybaby/p/7183854.html" target="_blank" rel="noopener">程序员必知的Python陷阱与缺陷列表</a><br><a href="https://github.com/leisurelicht/wtfpython-cn?utm_source=gold_browser_extension" target="_blank" rel="noopener">What the fuck Python!</a></p>
+<blockquote>
+<p>Default parameter values are evaluated when the function definition is executed.<br>python中一切都是对象，函数也不列外，默认参数只是函数的一个属性。而默认参数在函数定义的时候已经求值了</p>
+</blockquote>
+<p>例子：</p>
+<pre><code>import time
+def report(when=time.time()):
+    return when
+print(report())
+time.delay(5)
+print(report())
+</code></pre><p>上面这个例子两次的输出结果都是一样的<br><strong>利用这个特性，可以在参数栏设置一个可变对象，那么这个可变对象会存储上一次执行的信息</strong><br><strong>类似静态变量？</strong></p>
+<pre><code>def static_var(sv=[0]):
+    sv.append(sv[len(sv) - 1] + 1)
+    print(sv)
+
+static_var()
+static_var()
+static_var()
+</code></pre><p>上述程序执行结果为：</p>
+<pre><code>[0, 1]
+[0, 1, 2]
+[0, 1, 2, 4]
+</code></pre><h2><span id="python-静态成员变量的访问">python 静态成员变量的访问</span></h2><p>python 类的静态成员变量访问需要通过<code>类目.变量名</code>访问</p>
+<pre><code>class test(object):
+    num = 0
+
+    def __init__(self, is_bool, *args, **kwargs):
+        if is_bool:
+            &#39;&#39;&#39;类目.变量名访问静态成员变量&#39;&#39;&#39;
+            test.num += 1
+        return super().__init__(*args, **kwargs)
+
+    def count(self):
+        self.num += 1
+
+    def print_num(self):
+        print(test.num)
+</code></pre><h2><span id="python-循环删除列表">python 循环删除列表</span></h2><p>参考：<a href="https://www.cnblogs.com/bananaplan/p/remove-listitem-while-iterating.html" target="_blank" rel="noopener">Python的list循环遍历中，删除数据的正确方法</a><br><a href="https://www.zhihu.com/question/49098374" target="_blank" rel="noopener">为什么python中不建议在for循环中修改列表？</a></p>
+<p>python中不建议再for循环中删除列表元素，原因如下，假设原始列表为:</p>
+<pre><code>ori = [1, 2, 3, 3, 4, 5, 6, 7]
+for o in ori:
+    if o == 3:
+        ori.remove(o)
+</code></pre><p>结果如下：</p>
+<pre><code>OUT: [1, 2, 3, 4, 5, 6, 7]
+</code></pre><p>会发现<code>ori</code>列表中，只删除了一个3，出现这个问题本质上是因为python的<code>for item in ...</code>语法的问题，但程序执行<code>for item in ...</code>语句时，会调用对象的<code>__iter__()</code>方法，该方法返回一个<code>object_iterator</code>对象，再由这个<code>object_iterator</code>对象不断调用其<code>__next__()</code>方法，直到获取<code>StopIteration</code>异常。<br>换句话说，<strong>当执行for语句时，就已经把迭代的元素定下来了</strong><br>对于上述循环，当程序执行到第一个3时，执行<code>ori.remove(o)</code>方法，此时列表变为</p>
+<pre><code>[1, 2, 3, 4, 5, 6, 7]
+</code></pre><p><code>iter</code>对象此时在列表的第3个元素位置，即<code>ori[2]</code>的位置，此时再用<code>__next__()</code>方法获取列表的下一个值，将会获取到<code>ori[3]</code>的值，即4，所以最终还有一个3没有被删除。<br>如果在<code>for idx in range(len(ori))</code>中删除<code>ori</code>对象的话，则会导致数组溢出，程序报<code>IndexError</code>异常。<br><strong>解决方法</strong><br>为了解决这个问题，有几种方法:</p>
+<ol>
+<li>使用while循环，手动获取<code>idx</code>和列表元素</li>
+<li><p>使用列表切片<br>列表切片会将列表复制一份，而不是在原列表上进行操作，所以避免了上述问题，使用方法如下：</p>
+<pre><code>  for i in ori[:]:
+      pass
+</code></pre><ol>
+<li><p>倒序遍历列表<br>详见参考</p>
+<p>   for idx in range(len(ori) - 1, -1, -1):</p>
+<pre><code>   pass
+</code></pre></li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/23/Python/随笔-Python-Matplotlib使用/" rel="next" title="Python-Matplotlib使用">
+                <i class="fa fa-chevron-left"></i> Python-Matplotlib使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/23/LeetCode/随笔-add_two_sum/" rel="prev" title="add_two_sum">
+                add_two_sum <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">trobr</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/trobr" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wyf5249@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">argparse获取命令行传进的路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">python 字典相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">Python截断浮点数：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">lambda及sorted</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">python 可变对象作为默认参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">python 静态成员变量的访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">7.</span> <span class="nav-text">python 循环删除列表</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">trobr</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("i1hFCrHSRXoVXveSnCHU0HE3-gzGzoHsz", "3b5qD3myoCLUirP0yOGPSHWR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

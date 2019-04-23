@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="机器学习,反向传播算法,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="BP(back propagation)神经网络是1986年由Rumelhart和McClelland为首的科学家提出的概念，是一种按照误差逆向传播算法训练的多层前馈神经网络，神经网络已经被广泛应用于分类、回归等。">
+<meta name="keywords" content="机器学习,反向传播算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bp神经网络">
+<meta property="og:url" content="http://yoursite.com/2019/04/23/机器学习/反向传播算法/随笔-bp神经网络/index.html">
+<meta property="og:site_name" content="简问">
+<meta property="og:description" content="BP(back propagation)神经网络是1986年由Rumelhart和McClelland为首的科学家提出的概念，是一种按照误差逆向传播算法训练的多层前馈神经网络，神经网络已经被广泛应用于分类、回归等。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/trobr/MarkDownPic/master/ML-DL/bp/神经网络结构.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/trobr/MarkDownPic/master/ML-DL/bp/异或问题.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/trobr/MarkDownPic/master/ML-DL/bp/sigmoid.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/trobr/MarkDownPic/master/ML-DL/bp/tanh.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/trobr/MarkDownPic/master/ML-DL/bp/relu.png">
+<meta property="og:updated_time" content="2019-04-23T02:56:28.731Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bp神经网络">
+<meta name="twitter:description" content="BP(back propagation)神经网络是1986年由Rumelhart和McClelland为首的科学家提出的概念，是一种按照误差逆向传播算法训练的多层前馈神经网络，神经网络已经被广泛应用于分类、回归等。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/trobr/MarkDownPic/master/ML-DL/bp/神经网络结构.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/23/机器学习/反向传播算法/随笔-bp神经网络/">
+
+
+
+
+
+  <title>bp神经网络 | 简问</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?02c20c7fa12243b5d306df03ad146893";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简问</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/23/机器学习/反向传播算法/随笔-bp神经网络/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="trobr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简问">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">bp神经网络</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-23T10:56:28+08:00">
+                2019-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/23/机器学习/反向传播算法/随笔-bp神经网络/" class="leancloud_visitors" data-flag-title="bp神经网络">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>BP(back propagation)神经网络是1986年由Rumelhart和McClelland为首的科学家提出的概念，是一种按照误差逆向传播算法训练的多层前馈神经网络，神经网络已经被广泛应用于分类、回归等。</p>
+<a id="more"></a>
+<!-- toc -->
+<ul>
+<li><a href="#1-前向传播">1. 前向传播</a><ul>
+<li><a href="#11-激活值">1.1 激活值</a></li>
+<li><a href="#12-前向传播推导">1.2 前向传播推导</a></li>
+<li><a href="#13-神经元激活">1.3 神经元激活</a></li>
+</ul>
+</li>
+<li><a href="#2-反向传播">2 反向传播</a><ul>
+<li><a href="#21-损失函数">2.1 损失函数</a></li>
+<li><a href="#22-求解梯度">2.2 求解梯度</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<blockquote>
+<p>BP(back propagation)神经网络是1986年由Rumelhart和McClelland为首的科学家提出的概念，是一种按照误差逆向传播算法训练的多层前馈神经网络，神经网络已经被广泛应用于分类、回归等。</p>
+</blockquote>
+<p><strong>常见的神经网络由两部分组成：</strong></p>
+<ul>
+<li>前向传播——计算网络输出</li>
+<li>反向传播——更新网络参数<br>\(x\)</li>
+</ul>
+<h1><span id="1-前向传播">1.  前向传播</span></h1><p>首先看一下神经网络的基本结构，下图所示为由输入层（二节点）、隐藏层（一层、4个节点）、输出层（两个节点）构成的神经网络。<br><img src="https://raw.githubusercontent.com/trobr/MarkDownPic/master/ML-DL/bp/神经网络结构.jpg" alt="神经网络结构"><br>其中<script type="math/tex">z_i^{(j)}</script>表示第<script type="math/tex">j</script>层网络第<script type="math/tex">i</script>个节点的计算值，<script type="math/tex">a_i^{(j)}</script>表示第<script type="math/tex">j</script>层网络第<script type="math/tex">i</script>个节点的的<script type="math/tex">j</script>个节点的激活值。<br>在进一步介绍神经网络推导之前，先介绍一下激活值的作用</p>
+<h2><span id="11-激活值">1.1  激活值</span></h2><p>神经网络中神经元的结构的最初形态是Frank Rosenblatt在1957提出的感知机模型，它可以被视为一种最简单形式的前馈神经网络，是一种二元线性分类模型，其输入为实例的特征向量，输出为实例的类别，取+1和-1。感知机是神经网络的雏形，同时也是支持向量机的基础，感知机对应于输入空间（特征空间）中将实例划分为正负两类的分离超平面，属于判别模型。感知机学习旨在求出将训练数据进行线性划分的分离超平面。单层的感知机模型是最简单的神经网络，尽管结构简单，却能处理很多复杂的线性问题。<br>感知机是一种线性结构，只能处理线性问题，对于非线性问题感知机则无法处理，如异或问题，图下图。这是感知机最根本的缺陷，曾经也一度制约了神经网络的发展。</p>
+<p><img src="https://raw.githubusercontent.com/trobr/MarkDownPic/master/ML-DL/bp/异或问题.jpg" alt="异或问题"></p>
+<p>对于多层神经网络，若每个神经元（节点）都是线性模型，则根据线性模型的齐次性和可加性，可以得出，无论多少层线性网络，最终神经网络的输出都可以使用单层线性神经网络表示，多层网络失去了意义，而且也无法处理非线性问题。因此为了使神经网络能够深度化且能处理非线性问题，可以将神经元计算值输入非线性函数中，将非线性函数的输出值作为神经元真正的输出值。这个非线性函数就被称为激活函数，将神经网络计算值称为图1中的<script type="math/tex">z_i^{(j)}</script>，最终神经元输出的激活值称为<script type="math/tex">a_i^{(j)}</script>。<br>这便是激活值的由来和作用，<strong>总的来说，激活值就是为了使神经网络可以多层叠加（深度化）和使得神经网络可以处理非线性问题。</strong></p>
+<h2><span id="12-前向传播推导">1.2  前向传播推导</span></h2><p>神经网络结构中，第一层为输入层，是一个向量，表示输入的特征。最后一层为输出层，表示了神经网络最终的前向传播结果。层与层之间的连线表示了从前一层网络到后一层之间的系数，成为权重<script type="math/tex">w</script>。<br>假设连接第<script type="math/tex">l</script>层中第<script type="math/tex">i</script>个神经元与第<script type="math/tex">m+1</script>层中第<script type="math/tex">j</script>个神经元连接的权重为：</p>
+<script type="math/tex; mode=display">w_{ij}^{(l)}</script><p>如连接<script type="math/tex">x_1</script>与<script type="math/tex">z_2^{(1)}</script>的权重系数为<script type="math/tex">w_{12}^{(0)}</script>，连接<script type="math/tex">z_3^{(1)}</script>与<script type="math/tex">z_2^{(2)}</script>的权重系数为<script type="math/tex">w_{32}^{(1)}</script>。<br>则根据网络结构，可得，<strong>对于隐藏层有</strong>：</p>
+<script type="math/tex; mode=display">z_1^{(1)} = w_{11}^{(0)} * x_1 + w_{21}^{(0)} * x_2</script><script type="math/tex; mode=display">z_2^{(1)} = w_{12}^{(0)} * x_1 + w_{22}^{(0)} * x_2</script><script type="math/tex; mode=display">z_3^{(1)} = w_{13}^{(0)} * x_1 + w_{23}^{(0)} * x_2</script><script type="math/tex; mode=display">z_4^{(1)} = w_{14}^{(0)} * x_1 + w_{24}^{(0)} * x_2</script><p>即：</p>
+<script type="math/tex; mode=display">z_j^{(1)} = \sum_i^k w_{ij}^{(0)} * x_i</script><p>写成矩阵形式，则有：</p>
+<script type="math/tex; mode=display">Z^{(1)} = X * W^{(0)}</script><p>于是，对于更一般的情况（多层网络），第<script type="math/tex">l</script>层计算值则为：</p>
+<script type="math/tex; mode=display">Z^{(l)} = a^{(l-1)} * W^{(l-1)}</script><p>其中</p>
+<script type="math/tex; mode=display">a^{(l)} = \begin{bmatrix} a_{0}^{(l-1)} & a_{1}^{(l-1)}  & \cdots & a_{n}^{(l-1)}\end{bmatrix}</script><script type="math/tex; mode=display">W^{(l-1)} = 
+        \begin{bmatrix} 
+        w_{00}^{(l)} & w_{01}^{(l)} & \cdots & w_{0n}^{(l)}\\
+        w_{10}^{(l)} & w_{11}^{(l)} & \cdots & w_{1n}^{(l)}\\
+        \vdots & \ddots && \vdots \\ 
+        w_{m0}^{(l)} & w_{m1}^{(l)} & \cdots & w_{mn}^{(l)}\\
+        \end{bmatrix}</script><h2><span id="13-神经元激活">1.3 神经元激活</span></h2><p>经过前面的计算，神经网络已经可以前向传播，但是这时的神经网络仍然是线性模型，因为没有使用非线性函数对神经网络的计算值进行激活，所以在计算出计算值后，还需要使用非线性函数进行激活，得到神经元真正的输出<script type="math/tex">a_i^{(l)}</script>。<script type="math/tex">a_i^{(l)}</script>的计算公式为：</p>
+<script type="math/tex; mode=display">a_i^{(l)} = f(z_i^{(l)})</script><p>函数<script type="math/tex">f(x)</script>就是非线性激活函数，常用的激活函数有sigmoid函数，tanh函数及Relu函数等。<br><strong>sigmoid函数：</strong></p>
+<script type="math/tex; mode=display">f(x) = \frac{1}{1+e^{-x}}</script><p><img src="https://raw.githubusercontent.com/trobr/MarkDownPic/master/ML-DL/bp/sigmoid.png" alt="sigmoid图像"></p>
+<p><strong>tanh函数图像</strong></p>
+<script type="math/tex; mode=display">f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}</script><p><img src="https://raw.githubusercontent.com/trobr/MarkDownPic/master/ML-DL/bp/tanh.png" alt="tanh图像"></p>
+<p><strong>Relu函数图像</strong></p>
+<script type="math/tex; mode=display">f(x) = max(x, 0)</script><p><img src="https://raw.githubusercontent.com/trobr/MarkDownPic/master/ML-DL/bp/relu.png" alt="Relu图像"></p>
+<h1><span id="2-反向传播">2   反向传播</span></h1><p>经过前面的步骤，神经网络已经可以通过前向传播计算网络结果，并且神经元经过激活函数后，网络可以处理非线性问题。然而网络权重初始值一般是随机设置，这一组权重值一般情况下肯定不是最优解，网络输出与实际情况会有很大差异，因此需要利用当前网络的输出来更新权重值，直到网络输出与真实值差异小到一个我们可以接受的值。</p>
+<h2><span id="21-损失函数">2.1   损失函数</span></h2><p>为了更新网络的权重，需要刻画网络输出值与真实值之间的差异，这个用于刻画出与真实值差异的函数称为损失函数。常用的损失函数有平方损失函数，绝对误差、交叉熵等。反向传播的目的就是通过更新网络权重使得网络损失最小，即求损失函数的最小值时的权重。<br>以平方损失函数为例，当选择网络损失函数为最小均方函数时,对于输出层每一个神经元，有：</p>
+<script type="math/tex; mode=display">j_1(w) = {(y_1 - a_1^{(2)})}^2</script><script type="math/tex; mode=display">j_2(w) = {(y_2 - a_2^{(2)})}^2</script><p>则网络总损失记为：</p>
+<script type="math/tex; mode=display">J(w) = j_1(w) + j_2(w)</script><script type="math/tex; mode=display">J(w) = \sum_{i=1}^n {(y_i - a_i^{(l)})}^2</script><p>写成矩阵形式：</p>
+<script type="math/tex; mode=display">J(w) = \sum_{i=1}^n{(Y - a)}^2</script><p>其中<script type="math/tex">a = \begin{bmatrix} a_{0}^{(l)} & a_{1}^{(l)} & \cdots & a_{n}^{(l)}\end{bmatrix}</script>为网络输出，<script type="math/tex">Y = \begin{bmatrix} y_{0} & y_1 & \cdots & y_n \end{bmatrix}</script>，n为输出神经元个数，即输出维度。</p>
+<h2><span id="22-求解梯度">2.2   求解梯度</span></h2><p>2.1所示的问题是一个最优化问题，问题求解可以使用梯度下降法。有关梯度下降法的介绍见<a href="https://www.cnblogs.com/br170525/p/9033942.html" target="_blank" rel="noopener">博客园</a>、<a href="http://loveyfyq.com/2018/05/13/机器学习-梯度下降法/" target="_blank" rel="noopener">个人站</a>。<br>为了使用梯度下降法求解最优解，首先需要计算损失函数对每个权重<script type="math/tex">w_{ij}^{(l)}</script>的导数。</p>
+<ol>
+<li>根据前向传播可知，网络的最终输出其实是神经元中每个节点的输出与权重相乘后累加的结果，即对于隐藏层其输出为<script type="math/tex">a_1^{(1)}</script>、<script type="math/tex">a_2^{(1)}</script>、<script type="math/tex">a_3^{(1)}</script>、<script type="math/tex">a_4^{(1)}</script>，有：<script type="math/tex; mode=display">a_1^{(1)} = f(w_{11}^{(0)} * x_1 + w_{21}^{(0)} * x_2)</script><script type="math/tex; mode=display">a_2^{(1)} = f(w_{12}^{(0)} * x_1 + w_{22}^{(0)} * x_2)</script><script type="math/tex; mode=display">a_3^{(1)} = f(w_{13}^{(0)} * x_1 + w_{23}^{(0)} * x_2)</script><script type="math/tex; mode=display">a_4^{(1)} = f(w_{14}^{(0)} * x_1 + w_{24}^{(0)} * x_2)</script></li>
+<li>然后对于输出层：<script type="math/tex; mode=display">a_1^{(2)} = f(w_{11}^{(1)} * a_1^{(1)} + w_{21}^{(1)} * a_2^{(1)} + w_{31}^{(1)} * a_3^{(1)} + w_{41}^{(1)} * a_4^{(1)})</script><script type="math/tex; mode=display">a_2^{(2)} = f(w_{21}^{(1)} * a_1^{(1)} + w_{22}^{(1)} * a_2^{(1)} + w_{32}^{(1)} * a_3^{(1)} + w_{42}^{(1)} * a_4^{(1)})</script></li>
+<li>损失函数<script type="math/tex; mode=display">J(w) = {(y_1 - a_1^{(2)})}^2 + {(y_2 - a_2^{(2)})}^2</script></li>
+</ol>
+<p>可以看出，将1中的<script type="math/tex">a_i^{(1)}</script>带入2中，然后将2中的<script type="math/tex">a_i^{(2)}</script>带入3中，最终<script type="math/tex">J(w)</script>可以由网络节点输出值与权重的乘积表示。然后我们需要求的梯度是损失函数<script type="math/tex">J(w)</script>对权重<script type="math/tex">w_{ij}^{(l)}</script>的导数，理清权重与损失函数的关系之后，我们很容易利用链式法则求出损失函数对每一个权重的导数了。</p>
+<hr>
+<h1><span id="参考">参考</span></h1><ol>
+<li><a href="https://blog.csdn.net/wodeai1235/article/details/54755735" target="_blank" rel="noopener">感知机</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+            <a href="/tags/反向传播算法/" rel="tag"># 反向传播算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/16/随笔-GitHub个人博客搭建/" rel="next" title="随笔-GitHub个人博客搭建">
+                <i class="fa fa-chevron-left"></i> 随笔-GitHub个人博客搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/23/深度学习/PyTorch/随笔-PyTorch入门/" rel="prev" title="PyTorch入门">
+                PyTorch入门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">trobr</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/trobr" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wyf5249@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">1.  前向传播</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">1.1  激活值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">1.2  前向传播推导</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 神经元激活</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">2   反向传播</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.</span> <span class="nav-text">2.1   损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.2.</span> <span class="nav-text">2.2   求解梯度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">trobr</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("i1hFCrHSRXoVXveSnCHU0HE3-gzGzoHsz", "3b5qD3myoCLUirP0yOGPSHWR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
