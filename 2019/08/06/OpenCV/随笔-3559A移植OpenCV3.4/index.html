@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OpenCV,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="海思3559A嵌入式平台上编译OpenCV3.4">
+<meta name="keywords" content="OpenCV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3559A移植OpenCV3.4">
+<meta property="og:url" content="http://yoursite.com/2019/08/06/OpenCV/随笔-3559A移植OpenCV3.4/index.html">
+<meta property="og:site_name" content="简问">
+<meta property="og:description" content="海思3559A嵌入式平台上编译OpenCV3.4">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-06T04:53:41.509Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3559A移植OpenCV3.4">
+<meta name="twitter:description" content="海思3559A嵌入式平台上编译OpenCV3.4">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/06/OpenCV/随笔-3559A移植OpenCV3.4/">
+
+
+
+
+
+  <title>3559A移植OpenCV3.4 | 简问</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?02c20c7fa12243b5d306df03ad146893";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简问</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/06/OpenCV/随笔-3559A移植OpenCV3.4/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="trobr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简问">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">3559A移植OpenCV3.4</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-06T12:53:41+08:00">
+                2019-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenCV/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenCV</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/08/06/OpenCV/随笔-3559A移植OpenCV3.4/" class="leancloud_visitors" data-flag-title="3559A移植OpenCV3.4">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>海思3559A嵌入式平台上编译OpenCV3.4</p>
+<a id="more"></a>
+<!-- toc -->
+<ul>
+<li><a href="#1-下载">1. 下载</a></li>
+<li><a href="#2-安装">2. 安装</a><ul>
+<li><a href="#21-ittnotify_configh文件">2.1 ittnotify_config.h文件</a></li>
+<li><a href="#22-移动libpngarm">2.2 移动libpng/arm</a></li>
+</ul>
+</li>
+<li><a href="#3-编译opencv程序测试">3. 编译opencv程序测试</a></li>
+<li><a href="#参考">参考：</a></li>
+</ul>
+<!-- tocstop -->
+<p>[TOC]</p>
+<h1><span id="1-下载">1. 下载</span></h1><p>首先下载OpenCV3.4<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/opencv/opencv.git</span><br></pre></td></tr></table></figure></p>
+<p>编译OpenCV之前需要安装交叉编译工具，不同的平台有不同的交叉编译工具，这里不再赘述</p>
+<p>然后进入opencv目录，建立<code>build</code>和<code>dist</code>文件夹，分别用于保存build中间文件和安装文件<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd opencv-3.4.0</span><br><span class="line">mkdir build dist</span><br></pre></td></tr></table></figure></p>
+<h1><span id="2-安装">2. 安装</span></h1><p>由于需要交叉编译ARM版本，需要进行一些修改</p>
+<h2><span id="21-ittnotify_configh文件">2.1 ittnotify_config.h文件</span></h2><p>在3rdparty/ittnotify/src/ittnotify/ittnotify_config.h中，找到<code>__TBB_machine_fetchadd4</code>,将这里代码调整为如下所示：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __INTEL_COMPILER</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __TBB_machine_fetchadd4(addr, val) __fetchadd4_acq((void *)addr, val)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>  <span class="comment">/* __INTEL_COMPILER */</span></span></span><br><span class="line"><span class="comment">/* <span class="doctag">TODO:</span> Add Support for not Intel compilers for IA-64 architecture */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* modify by br */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __TBB_machine_fetchadd4(addr, val) __sync_fetch_and_add(addr, val)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* __INTEL_COMPILER */</span></span></span><br></pre></td></tr></table></figure></p>
+<h2><span id="22-移动libpngarm">2.2 移动libpng/arm</span></h2><p>将<code>opencv-3.4.0/3rdparty/libpng/arm/</code>下的代码放到<code>opencv-3.4.0/3rdparty/libpng</code>目录中,然后分别将<br><code>opencv-3.4.0/3rdparty/libpng/arm_init.c</code>和<code>opencv-3.4.0/3rdparty/libpng/filter_neon_intrinsics.c</code>中的<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../pngpriv.h"</span></span></span><br></pre></td></tr></table></figure></p>
+<p>修改为：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"pngpriv.h"</span></span></span><br></pre></td></tr></table></figure></p>
+<p><strong>两个文件都要修改</strong></p>
+<p>进入build文件夹，cmake：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">cmake  -DCMAKE_BUILD_TYPE=RELEASE \</span><br><span class="line">    -DCMAKE_INSTALL_PREFIX=../dist \</span><br><span class="line">    -DCMAKE_C_COMPILER=aarch64-himix100-linux-gcc \</span><br><span class="line">    -DCMAKE_CXX_COMPILER=aarch64-himix100-linux-g++ \</span><br><span class="line">    -DBUILD_SHARED_LIBS=ON \</span><br><span class="line">    -DOPENCV_EXTRA_C_FLAGS=-fPIC \</span><br><span class="line">    -DBUILD_opencv_apps=OFF \</span><br><span class="line">    -DBUILD_ZLIB=ON \</span><br><span class="line">    -DBUILD_PNG=ON \</span><br><span class="line">    -DBUILD_opencv_js=OFF \</span><br><span class="line">    -DBUILD_TESTS=OFF \</span><br><span class="line">    -DBUILD_ANDROID_EXAMPLES=OFF \</span><br><span class="line">    -DBUILD_PACKAGE=OFF \</span><br><span class="line">    -DBUILD_TESTS=OFF \</span><br><span class="line">    -DBUILD_PERF_TESTS=OFF \</span><br><span class="line">    -DENABLE_PIC=TRUE \</span><br><span class="line">    -DOpenCV_ARCH=AARCH64 \</span><br><span class="line">    -DWITH_IPP=OFF \</span><br><span class="line">    -DENABLE_NEON=ON \</span><br><span class="line">    -DZLIB_INCLUDE_DIR=/home/br/delB/extension/cpp/OpenCV/install/opencv-3.4.0/3rdparty/zlib \</span><br><span class="line">    -DZLIB_INCLUDE_DIRS=/home/br/delB/extension/cpp/OpenCV/install/opencv-3.4.0/3rdparty/zlib \</span><br><span class="line">    ..</span><br></pre></td></tr></table></figure></p>
+<p>这里之介绍几个选项的作用：</p>
+<ol>
+<li><code>-DCMAKE_C_COMPILER</code>和<code>-DCMAKE_CXX_COMPILER</code>指定交叉编译工具</li>
+<li><code>-DWITH_IPP</code>关闭ipp加速，开启的情况需要手动下载ippicv，并放到相应的文件夹</li>
+<li><code>-DENABLE_NEON</code> 开启NEON，不开启的情况下安装opencv后，编译应用程序时会出现链接错误</li>
+<li><code>-DZLIB_INCLUDE_DIR</code>指定zlib库的位置</li>
+</ol>
+<p>如果没有问题，cmake就通过了，然后直接执行make就可以：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make -j8</span><br><span class="line">make install</span><br></pre></td></tr></table></figure></p>
+<h1><span id="3-编译opencv程序测试">3. 编译opencv程序测试</span></h1><p>为了测试opencv是否编译成功，可以编译一段应用程序测试。<br>首先在<code>dist/lib/pkg-config</code>文件夹中找到<code>opencv.pc</code>文件，这是pkg-config读取opencv编译参数的文件，然后查找pkg-config存放<code>.pc</code>文件的目录：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo find / | grep '\.pc$$'</span><br></pre></td></tr></table></figure></p>
+<p>将<code>opencv.pc</code>文件移动到该目录下即可,<strong>如果编译了多版本opencv，注意区分不同版本</strong></p>
+<p>然后<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Mat img = imread(argv[<span class="number">1</span>],<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; img.size() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// imshow("显示灰度图",img);</span></span><br><span class="line">    <span class="comment">// waitKey(0);</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Makefile:<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">SRC_DIRS = .</span><br><span class="line">OBJ_DIRS = ./obj</span><br><span class="line">BIN_DIRS = ./bin</span><br><span class="line">BIN_FILE = test</span><br><span class="line"></span><br><span class="line"><span class="comment">#cpp源文件路径</span></span><br><span class="line">SRCS = $<span class="variable">$(<span class="built_in">wildcard</span> $<span class="variable">$(SRC_DIRS)</span>/*.cpp)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#.o文件</span></span><br><span class="line">OBJS = $<span class="variable">$(<span class="built_in">addprefix</span> $<span class="variable">$(OBJ_DIRS)</span>/, $$(<span class="built_in">patsubst</span> %.cpp,%.o, $$(<span class="built_in">notdir</span> $<span class="variable">$(SRCS)</span>)</span>))</span><br><span class="line"><span class="comment"># OBJS = $$(patsubst %.cpp,%.o,$$(SRCS))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#g++和nvcc编译器</span></span><br><span class="line">CXX = aarch64-himix100-linux-g++</span><br><span class="line"></span><br><span class="line"><span class="comment">#C/C++编译选项  --  OpenCV头文件路径</span></span><br><span class="line">CFLAGS = `pkg-config --cflags opencv`</span><br><span class="line"></span><br><span class="line"><span class="comment">#C/C++编译选项  --  当前工程头文件路径及优化选项(-O3)</span></span><br><span class="line">CFLAGS += -std=c++11 -O3 </span><br><span class="line"></span><br><span class="line"><span class="comment">#C/C++链接器选项  -- OpenCV库及其路径</span></span><br><span class="line">LDFLAGS = `pkg-config --libs opencv` -O3</span><br><span class="line"></span><br><span class="line"><span class="comment">#最终目标</span></span><br><span class="line">EXE = $<span class="variable">$(BIN_DIRS)</span>/$<span class="variable">$(BIN_FILE)</span></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: all</span></span><br><span class="line"><span class="section">all: prefix $<span class="variable">$(EXE)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">#链接</span></span><br><span class="line">$<span class="variable">$(EXE)</span> : $<span class="variable">$(OBJS)</span>	</span><br><span class="line">	@echo Linking ...</span><br><span class="line">	@$<span class="variable">$(CXX)</span> -o $<span class="variable">$@</span> $<span class="variable">$^</span> $<span class="variable">$(LDFLAGS)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#C/C++编译</span></span><br><span class="line">$<span class="variable">$(OBJ_DIRS)</span>/%.o : $<span class="variable">$(SRC_DIRS)</span>/%.cpp</span><br><span class="line">	@echo CXX      $<span class="variable">$&lt;</span></span><br><span class="line">	@$<span class="variable">$(CXX)</span> $<span class="variable">$(CFLAGS)</span> -c $<span class="variable">$&lt;</span> -o $<span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: prefix clean debug</span></span><br><span class="line"><span class="section">prefix:</span></span><br><span class="line">	@if test ! -d <span class="string">"$<span class="variable">$(OBJ_DIRS)</span>"</span> ; then\</span><br><span class="line">		mkdir -p $<span class="variable">$(OBJ_DIRS)</span>; \</span><br><span class="line">	fi</span><br><span class="line"></span><br><span class="line">	@if test ! -d <span class="string">"$<span class="variable">$(BIN_DIRS)</span>"</span> ; then\</span><br><span class="line">		mkdir -p $<span class="variable">$(BIN_DIRS)</span>; \</span><br><span class="line">	fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">clean :</span><br><span class="line">	-rm $<span class="variable">$(OBJ_DIRS)</span>/*</span><br><span class="line">	-rm $<span class="variable">$(EXE)</span></span><br><span class="line"></span><br><span class="line">debug :</span><br><span class="line">	@echo $<span class="variable">$(SRC_DIRS)</span></span><br><span class="line">	@echo $<span class="variable">$(OBJS)</span></span><br><span class="line">	@echo $<span class="variable">$(EXE)</span></span><br></pre></td></tr></table></figure></p>
+<p>然后将编译得到的可执行文件<code>bin/test</code>和opencv库<code>opencv-3.4.0/dist/lib</code>传到3559A上，使用ftp,ntfs,nc都可以<br>添加<code>lib</code>目录到环境变量<code>LD_LIBRARY_PATH</code>中：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=/where/you/install/lib:$$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure></p>
+<p>添加执行权限并执行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x test</span><br><span class="line">./test 1.jpg</span><br></pre></td></tr></table></figure></p>
+<p>得到结果如下：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[508 x 273]</span><br></pre></td></tr></table></figure></p>
+<h1><span id="参考">参考：</span></h1><p><a href="https://blog.csdn.net/zhenglie110/article/details/87933483" target="_blank" rel="noopener">海思3559上移植OpenCV3.4.1 (四)在3559A上的适配</a><br><a href="https://blog.csdn.net/zhenglie110/article/details/83009675" target="_blank" rel="noopener">海思3559上移植OpenCV3.4.1 (一) 代码移植</a><br><a href="https://www.cnblogs.com/youxin/p/5116243.html" target="_blank" rel="noopener">linux 缺少动态连接库.so—cannot open shared object file: No such file or directory</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenCV/" rel="tag"># OpenCV</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/06/OpenCV/随笔-Ubuntu环境下编译OpenCV及OpenCV-Contrib/" rel="next" title="Ubuntu环境下编译OpenCV及OpenCV-Contrib">
+                <i class="fa fa-chevron-left"></i> Ubuntu环境下编译OpenCV及OpenCV-Contrib
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/06/深度学习/基础网络/随笔-RNN网络及其推导/" rel="prev" title="RNN网络及其推导">
+                RNN网络及其推导 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">trobr</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/trobr" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wyf5249@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">1. 下载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">2. 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 ittnotify_config.h文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 移动libpng/arm</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">3. 编译opencv程序测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">参考：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">trobr</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("i1hFCrHSRXoVXveSnCHU0HE3-gzGzoHsz", "3b5qD3myoCLUirP0yOGPSHWR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

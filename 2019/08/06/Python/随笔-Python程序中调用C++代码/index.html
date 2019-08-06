@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在很多实际应用的场景中，我们经常会遇到需要使Python程序与C++程序通信的场景，Python程序通过一定方法获得C++程序的一些执行结果。在这种场景下，最简单的方法就是分别启动Python和C++程序，然后在程序中使用管道、文件、socket等方式进行通信，但是这种方法效率低，如果程序对时间要求严格，则无法使用。另一种方法就是在Python中调用C++代码，Python中有很多方法实现调用C+">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python程序中调用C++代码">
+<meta property="og:url" content="http://yoursite.com/2019/08/06/Python/随笔-Python程序中调用C++代码/index.html">
+<meta property="og:site_name" content="简问">
+<meta property="og:description" content="在很多实际应用的场景中，我们经常会遇到需要使Python程序与C++程序通信的场景，Python程序通过一定方法获得C++程序的一些执行结果。在这种场景下，最简单的方法就是分别启动Python和C++程序，然后在程序中使用管道、文件、socket等方式进行通信，但是这种方法效率低，如果程序对时间要求严格，则无法使用。另一种方法就是在Python中调用C++代码，Python中有很多方法实现调用C+">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-06T04:53:41.771Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python程序中调用C++代码">
+<meta name="twitter:description" content="在很多实际应用的场景中，我们经常会遇到需要使Python程序与C++程序通信的场景，Python程序通过一定方法获得C++程序的一些执行结果。在这种场景下，最简单的方法就是分别启动Python和C++程序，然后在程序中使用管道、文件、socket等方式进行通信，但是这种方法效率低，如果程序对时间要求严格，则无法使用。另一种方法就是在Python中调用C++代码，Python中有很多方法实现调用C+">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/06/Python/随笔-Python程序中调用C++代码/">
+
+
+
+
+
+  <title>Python程序中调用C++代码 | 简问</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?02c20c7fa12243b5d306df03ad146893";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简问</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/06/Python/随笔-Python程序中调用C++代码/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="trobr">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简问">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python程序中调用C++代码</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-06T12:53:41+08:00">
+                2019-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/08/06/Python/随笔-Python程序中调用C++代码/" class="leancloud_visitors" data-flag-title="Python程序中调用C++代码">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在很多实际应用的场景中，我们经常会遇到需要使Python程序与C++程序通信的场景，Python程序通过一定方法获得C++程序的一些执行结果。在这种场景下，最简单的方法就是分别启动Python和C++程序，然后在程序中使用管道、文件、socket等方式进行通信，但是这种方法效率低，如果程序对时间要求严格，则无法使用。另一种方法就是在Python中调用C++代码，Python中有很多方法实现调用C++代码，如ctypes、swig等，这里介绍使用Windows系统下使用Swig实现Python中调用C++代码。</p>
+<a id="more"></a>
+<!-- toc -->
+<ul>
+<li><a href="#1-swig介绍">1. SWIG介绍</a></li>
+<li><a href="#2-python中调用ffmpeg">2. Python中调用FFMPEG</a><ul>
+<li><a href="#21-c实现">2.1 C++实现</a></li>
+<li><a href="#22-swig-生成包装器代码">2.2 SWIG 生成包装器代码</a></li>
+<li><a href="#23-使用编译器编译生成库文件">2.3 使用编译器编译生成库文件</a></li>
+</ul>
+</li>
+<li><a href="#3-遇到的问题">3 遇到的问题</a><ul>
+<li><a href="#31-目标平台和本机类型冲突">3.1 目标平台和本机类型冲突</a></li>
+<li><a href="#32-dll-load-failed">3.2 DLL load failed</a></li>
+</ul>
+</li>
+<li><a href="#参考">参考：</a></li>
+</ul>
+<!-- tocstop -->
+<h1><span id="1-swig介绍">1. SWIG介绍</span></h1><blockquote>
+<p>swig是Simplified Wrapper and Interface Generator的简称，它是一个能将C和C++的程序与其他各种高级语言诸如Perl，Python，Ruby和Tcl进行连结的开发工具。</p>
+</blockquote>
+<p>官网：<a href="http://www.swig.org/" target="_blank" rel="noopener">SWIG官网</a><br>官方的一些例子：<a href="http://www.swig.org/tutorial.html" target="_blank" rel="noopener">Tutorial</a></p>
+<h1><span id="2-python中调用ffmpeg">2. Python中调用FFMPEG</span></h1><blockquote>
+<p>FFmpeg是一个自由软件，可以运行音频和视频多种格式的录影、转换、流功能1，包含了libavcodec ─这是一个用于多个项目中音频和视频的解码器库，以及libavformat——一个音频与视频格式转换库。</p>
+</blockquote>
+<p>使用ffmpeg可以方便的实现视频编解码，但是ffmpeg的代码是使用C语言完成的，如果需要在Python中调用就需要使用SWIG。这里介绍使用C++完成FFMPEG对视频进行全局运动估计，并在Python中调用C++代码获取运动估计结果。</p>
+<h2><span id="21-c实现">2.1 C++实现</span></h2><p>ffmpeg全局运动估计代码参考自官方的例程<code>examples\extract_mvs.c</code>，为了方便调用，定义了一个<code>EvalMotion</code>类，如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// eval_motion.h</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EvalMotion</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	EvalMotion()&#123;&#125;</span><br><span class="line">	~EvalMotion();</span><br><span class="line">	EvalMotion(<span class="built_in">std</span>::<span class="built_in">string</span> file);</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">re_open</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> file)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">open_codec_context</span><span class="params">(AVFormatContext *fmt_ctx, <span class="keyword">enum</span> AVMediaType type)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">decode_packet</span><span class="params">(<span class="keyword">const</span> AVPacket *pkt)</span></span>;</span><br><span class="line">	cv::<span class="function">Mat <span class="title">avFrame2Mat</span><span class="params">(AVFrame* pAvFrame, AVCodecContext*pCodecCtx)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">draw_motion</span><span class="params">(cv::Mat &amp;im, <span class="keyword">const</span> AVFrameSideData *sd)</span></span>;</span><br><span class="line">	cv::<span class="function">Mat <span class="title">calc_global_motion</span><span class="params">(<span class="keyword">const</span> AVFrameSideData *sd, <span class="keyword">int</span> thre = <span class="number">50</span>)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">eval</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	AVFormatContext *fmt_ctx = <span class="literal">NULL</span>;</span><br><span class="line">	AVCodecContext *video_dec_ctx = <span class="literal">NULL</span>;</span><br><span class="line">	AVStream *video_stream = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">char</span> *src_filename = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	AVPacket pkt = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> video_stream_idx = <span class="number">-1</span>;</span><br><span class="line">	AVFrame *frame = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">int</span> video_frame_count = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中<code>re_open</code>函数用于打开一个视频流，然后循环调用<code>eavl</code>函数即可完成全局运动估计，视频结束后<code>eval</code>函数返回-1。<code>eval</code>函数中首先调用FFMPEG的<code>av_frame_get_side_data</code>函数计算运动矢量，然后分别在x，y两个方向上累加所有运动矢量，得到一个全局运动矢量。</p>
+<h2><span id="22-swig-生成包装器代码">2.2 SWIG 生成包装器代码</span></h2><p>SWIG的使用简单，下载预编译包后，解压即可使用。在使用SWIG生成包装器代码前，需要定义其接口文件，文件后缀为<code>.i</code></p>
+<p>文件结构如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- root</span><br><span class="line">  | - eval_motion.c</span><br><span class="line">  | - eval_motion.h</span><br><span class="line">  | - motion_wrapper.i</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/* motion_wrapper.i */</span><br><span class="line"></span><br><span class="line">%module EvalMotion</span><br><span class="line">%include &lt;std_string.i&gt;</span><br><span class="line">%&#123;</span><br><span class="line">#include &quot;EvalMotion.h&quot;</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">%include &quot;EvalMotion.h&quot;</span><br></pre></td></tr></table></figure>
+<p>接口文件主要包括三部分：</p>
+<ul>
+<li>模块名称</li>
+<li>包含内容</li>
+<li>接口内容</li>
+</ul>
+<p>其中<code>%module</code>后跟随的是模块名称，用于定义生成的Python模块名称，如定义的为<code>EvalMotion</code>，则在python中使用<code>import EvalMotion</code>来导入生成的模块。<br><code>%{ ... %}</code>中的为包含内容，一般为编译这个模块所需要的头文件、宏定义等<br>最后一部分为需要生成供Python调用的接口，可以直接使用SWIG的<code>%include</code>功能。</p>
+<p>然后执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swig.exe -c++ -python motion_wrapper.i</span><br></pre></td></tr></table></figure></p>
+<p>可以在当前目录下生成<code>motion_wrapper_wrap.cxx</code>和’EvalMotion.py’两个文件。</p>
+<h2><span id="23-使用编译器编译生成库文件">2.3 使用编译器编译生成库文件</span></h2><p><code>motion_wrapper_wrap.cxx</code>为SWIG生成的包装器代码，只需要将这部分代码和运动估计的代码一起编译成<code>.pyd</code>(windows)/<code>.so</code>(linux)即可。<br>windows平台下打开VS命令行提示符输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cl /LD motion_wrapper_wrap.cxx eval_motion.cpp /o _EvalMotion.pyd \</span><br><span class="line">-IC:\Users\br\Envs\pytorch_image\Include -ID:\ImgPro\Extensions\Cpp\FFMPEG\build\include \</span><br><span class="line">-ID:\ImgPro\Extensions\Cpp\OpenCV\OpenCV3_4\opencv\build\include \</span><br><span class="line">.\python\python36.lib .\opencv\opencv_world340.lib .\ffmpeg\avcodec.lib .\ffmpeg\avdevice.lib \</span><br><span class="line">.\ffmpeg\avfilter.lib .\ffmpeg\avformat.lib .\ffmpeg\avutil.lib .\ffmpeg\postproc.lib \</span><br><span class="line">.\ffmpeg\swresample.lib .\ffmpeg\swscale.lib</span><br></pre></td></tr></table></figure>
+<p>注意这里<code>/o _EvalMotion.pyd</code>的<code>_EvalMotion.pyd</code>要与前面的模块名<code>EvalMotion</code>相对应。</p>
+<p>生成<code>_EvalMotion.pyd</code>文件后就可以在Python中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import EvalMotion</span><br></pre></td></tr></table></figure></p>
+<p>导入模块使用</p>
+<h1><span id="3-遇到的问题">3 遇到的问题</span></h1><h2><span id="31-目标平台和本机类型冲突">3.1 目标平台和本机类型冲突</span></h2><p>最开始使用cl编译的时候提示<br><code>模块计算机类型“x64”与目标计算机类型“x86”冲突</code><br>这是由于VS命令行提示符的类型不同造成的，VS共有<code>x64_x86</code>、<code>x86</code>、<code>x64</code>、<code>x86_x64</code>几种不同的命令行提示符，区别在于<code>x64_x86</code>用于在x64平台生成x86程序，<code>x86_x64</code>用于在x86平台生成x64程序等，详情见官网：<a href="https://docs.microsoft.com/zh-cn/cpp/build/building-on-the-command-line?view=vs-2019" target="_blank" rel="noopener">通过命令行使用 MSVC 工具集</a></p>
+<h2><span id="32-dll-load-failed">3.2 DLL load failed</span></h2><p>Python中导入模块的时候，提示<code>DLL load failed: 找不到指定的模块。</code><br>这是由于FFMPEG和OpenCV都有运行时动态库，而这些库的路径不在系统环境变量下，导致Python无法导入这些模块，解决方法为使用Python自带<code>os</code>模块，在导入模块的代码前执行：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">wd = os.path.dirname(__file__)</span><br><span class="line">wddll = os.path.join(wd, <span class="string">'dll'</span>)</span><br><span class="line">os.environ[<span class="string">'path'</span>] += wddll</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> EvalMotion</span><br></pre></td></tr></table></figure></p>
+<p>即可</p>
+<p>为了美观可以将上述代码放入模块所在包的<code>__init__.py</code>文件中</p>
+<h1><span id="参考">参考：</span></h1><p><a href="https://www.zhihu.com/question/23003213/answer/56121859" target="_blank" rel="noopener">如何实现 C/C++ 与 Python 的通信？ - Jerry Jho的回答 - 知乎</a><br><a href="https://blog.csdn.net/guyuealian/article/details/79607568" target="_blank" rel="noopener">FFmpeg转OpenCV Mat显示</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/23/VSCode/随笔-vscode中python导入模块时出现绿色波浪线的问题/" rel="next" title="vscode中python导入模块时出现绿色波浪线的问题">
+                <i class="fa fa-chevron-left"></i> vscode中python导入模块时出现绿色波浪线的问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/06/OpenCV/随笔-Ubuntu环境下编译ceres/" rel="prev" title="Ubuntu环境下编译ceres">
+                Ubuntu环境下编译ceres <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">trobr</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/trobr" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wyf5249@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">1. SWIG介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">2. Python中调用FFMPEG</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 C++实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 SWIG 生成包装器代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 使用编译器编译生成库文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">3 遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 目标平台和本机类型冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 DLL load failed</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">参考：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">trobr</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("i1hFCrHSRXoVXveSnCHU0HE3-gzGzoHsz", "3b5qD3myoCLUirP0yOGPSHWR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
